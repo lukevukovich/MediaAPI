@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MediaAPI</name>
+    </assembly>
+    <members>
+        <member name="M:MediaAPI.Controllers.MediaController.GetMdbListAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Obtain a list from MDBList with TMDB poster URLs.
+            </summary>
+            <param name="owner">Owner of the MDBList</param>
+            <param name="name">Name of the MDBList</param>
+            <param name="cancellationToken">Token used to cancel the request</param>
+        </member>
+        <member name="M:MediaAPI.Controllers.MediaController.GetTmdbPosterAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Obtain a TMDB poster URL for a given IMDB ID.
+            </summary>
+            <param name="imdb_id">The IMDB ID of the media item</param>
+            <param name="cancellationToken">Token used to cancel the request</param>
+        </member>
+    </members>
+</doc>

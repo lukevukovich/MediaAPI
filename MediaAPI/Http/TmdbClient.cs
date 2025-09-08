@@ -1,7 +1,7 @@
-using MdbListApi.Options;
+using MediaAPI.Options;
 using Microsoft.Extensions.Options;
 
-namespace MdbListApi.Http
+namespace MediaAPI.Http
 {
     public class TmdbClient : ITmdbClient
     {

@@ -1,4 +1,4 @@
-namespace MdbListApi.Http
+namespace MediaAPI.Http
 {
     public class MdbListClient : IMdbListClient
     {

@@ -1,10 +1,10 @@
-using MdbListApi.Http;
-using MdbListApi.Models;
-using MdbListApi.Options;
+using MediaAPI.Http;
+using MediaAPI.Models;
+using MediaAPI.Options;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 
-namespace MdbListApi.Services
+namespace MediaAPI.Services
 {
     public class TmdbService : ITmdbService
     {
@@ -17,13 +17,17 @@ namespace MdbListApi.Services
             _options = options.Value;
         }
 
-        public async Task<IResult> ProxyPosterPathAsync(string imdb_id, CancellationToken cancellationToken = default)
+        public async Task<ProxyResult<TmdbPoster>> ProxyPosterPathAsync(string imdb_id, CancellationToken cancellationToken = default)
         {
             var response = await _client.GetPosterPathAsync(imdb_id, cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync(cancellationToken);
-                return Results.Problem(title: "Tmdb Poster error", detail: error, statusCode: (int)response.StatusCode);
+                return new ProxyResult<TmdbPoster>
+                {
+                    Success = false,
+                    ErrorMessage = error
+                };
             }
 
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
@@ -36,14 +40,24 @@ namespace MdbListApi.Services
             var tmdbResponse = await JsonSerializer.DeserializeAsync<TmdbResponse>(stream, options, cancellationToken);
             var posterPath = tmdbResponse?.MovieResults?.FirstOrDefault()?.PosterPath ?? tmdbResponse?.TvResults?.FirstOrDefault()?.PosterPath;
             if (string.IsNullOrEmpty(posterPath))
-                return Results.Problem(title: "TMDB Poster error", detail: $"Poster not found for IMDB ID {imdb_id}", statusCode: 404);
+            {
+                return new ProxyResult<TmdbPoster>
+                {
+                    Success = false,
+                    ErrorMessage = $"Poster not found for IMDB ID {imdb_id}"
+                };
+            }
 
             var tmdbPoster = new TmdbPoster
             {
                 ImdbId = imdb_id,
                 PosterPath = $"{_options.PosterBaseUrl}{posterPath}"
             };
-            return Results.Ok(tmdbPoster);
+            return new ProxyResult<TmdbPoster>
+            {
+                Success = true,
+                Value = tmdbPoster
+            };
         }
     }
 }

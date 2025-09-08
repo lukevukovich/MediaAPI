@@ -32,3 +32,5 @@ F:\Programming\C#\MediaAPI\MediaAPI\obj\Debug\net8.0\refint\MediaAPI.dll
 F:\Programming\C#\MediaAPI\MediaAPI\obj\Debug\net8.0\MediaAPI.pdb
 F:\Programming\C#\MediaAPI\MediaAPI\obj\Debug\net8.0\MediaAPI.genruntimeconfig.cache
 F:\Programming\C#\MediaAPI\MediaAPI\obj\Debug\net8.0\ref\MediaAPI.dll
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Debug\net8.0\MediaAPI.xml
+F:\Programming\C#\MediaAPI\MediaAPI\obj\Debug\net8.0\MediaAPI.xml

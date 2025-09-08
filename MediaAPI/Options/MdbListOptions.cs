@@ -1,4 +1,4 @@
-namespace MdbListApi.Options
+namespace MediaAPI.Options
 {
     public sealed class MdbListOptions
     {

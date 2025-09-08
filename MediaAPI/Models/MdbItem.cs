@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MdbListApi.Models
+namespace MediaAPI.Models
 {
     public class MdbItem
     {

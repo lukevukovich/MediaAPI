@@ -1,9 +1,9 @@
-using MdbListApi.Http;
-using MdbListApi.Models;
+using MediaAPI.Http;
+using MediaAPI.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Text.Json;
 
-namespace MdbListApi.Services
+namespace MediaAPI.Services
 {
     public class MdbListService : IMdbListService
     {
@@ -16,13 +16,27 @@ namespace MdbListApi.Services
             _service = service;
         }
 
-        public async Task<IResult> ProxyListAsync(string owner, string name, CancellationToken cancellationToken = default)
+        public async Task<ProxyResult<MdbList>> ProxyListAsync(string owner, string name, CancellationToken cancellationToken = default)
         {
             var response = await _client.GetListAsync(owner, name, cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync(cancellationToken);
-                return Results.Problem(title: "MDBList error", detail: error, statusCode: (int)response.StatusCode);
+                return new ProxyResult<MdbList>
+                {
+                    Success = false,
+                    ErrorMessage = error
+                };
+            }
+
+            var stringResponse = await response.Content.ReadAsStringAsync(cancellationToken);
+            if (stringResponse.Contains("empty or private list", StringComparison.OrdinalIgnoreCase))
+            {
+                return new ProxyResult<MdbList>
+                {
+                    Success = false,
+                    ErrorMessage = "MDBList is empty or does not exist."
+                };
             }
 
             var options = new JsonSerializerOptions
@@ -31,16 +45,10 @@ namespace MdbListApi.Services
             };
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
             var deserializedList = await JsonSerializer.DeserializeAsync<List<MdbItem>>(stream, options, cancellationToken);
-            var itemList = deserializedList?.Where(item => item.ImdbId is not null).ToList();
-            var list = new MdbList
-            {
-                Name = name,
-                Owner = owner,
-                Items = itemList ?? new List<MdbItem>()
-            };
+            var itemList = deserializedList?.Where(item => item.ImdbId is not null).ToList() ?? new List<MdbItem>();
 
-            var semaphore = new SemaphoreSlim(5); // allow 5 concurrent requests
-            var tasks = list.Items
+            var semaphore = new SemaphoreSlim(5);
+            var tasks = itemList
                 .Where(item => !string.IsNullOrEmpty(item.ImdbId) && item.ImdbId.StartsWith("tt"))
                 .Select(async item =>
                 {
@@ -48,7 +56,7 @@ namespace MdbListApi.Services
                     try
                     {
                         var result = await _service.ProxyPosterPathAsync(item.ImdbId!, cancellationToken);
-                        var posterPath = result is Ok<TmdbPoster> ok ? ok.Value?.PosterPath : null;
+                        var posterPath = result.Success ? result.Value?.PosterPath : null;
                         if (posterPath is not null)
                             item.PosterPath = posterPath;
                     }
@@ -60,7 +68,30 @@ namespace MdbListApi.Services
 
             await Task.WhenAll(tasks);
 
-            return list is not null ? Results.Ok(list) : Results.NotFound();
+            if (itemList != null && itemList.Any(x =>
+                !string.IsNullOrWhiteSpace(x.ImdbId) ||
+                !string.IsNullOrWhiteSpace(x.Title)))
+            {
+                var mdbList = new MdbList
+                {
+                    Name = name,
+                    Owner = owner,
+                    Items = itemList
+                };
+                return new ProxyResult<MdbList>
+                {
+                    Success = true,
+                    Value = mdbList
+                };
+            }
+            else
+            {
+                return new ProxyResult<MdbList>
+                {
+                    Success = false,
+                    ErrorMessage = "MDBList could not be retrieved."
+                };
+            }
         }
     }
 }
