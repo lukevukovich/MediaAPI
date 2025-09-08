@@ -1,4 +1,5 @@
 using MediaAPI.Models;
+using MediaAPI.Models.Tmdb;
 
 namespace MediaAPI.Services
 {

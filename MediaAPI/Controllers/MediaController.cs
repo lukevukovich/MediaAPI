@@ -25,10 +25,10 @@ namespace MediaAPI.Controllers
         [HttpGet("list/{owner}/{name}")]
         public async Task<IActionResult> GetMdbListAsync(string owner, string name, CancellationToken cancellationToken = default)
         {
-            var result = await _mdbListService.ProxyListAsync(owner, name, cancellationToken);
+            var result = await _mdbListService.ProxyListAsync(owner, name, cancellationToken: cancellationToken);
             if (!result.Success)
             {
-                return Problem(result.ErrorMessage, statusCode: 500);
+                return Problem(result.ErrorMessage, statusCode: result.StatusCode);
             }
             return Ok(result.Value);
         }
@@ -44,7 +44,7 @@ namespace MediaAPI.Controllers
             var result = await _tmdbService.ProxyPosterPathAsync(imdb_id, cancellationToken);
             if (!result.Success)
             {
-                return Problem(result.ErrorMessage, statusCode: 500);
+                return Problem(result.ErrorMessage, statusCode: result.StatusCode);
             }
             return Ok(result.Value);
         }

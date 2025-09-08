@@ -1,5 +1,6 @@
 using MediaAPI.Http;
 using MediaAPI.Models;
+using MediaAPI.Models.Tmdb;
 using MediaAPI.Options;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
@@ -26,7 +27,8 @@ namespace MediaAPI.Services
                 return new ProxyResult<TmdbPoster>
                 {
                     Success = false,
-                    ErrorMessage = error
+                    ErrorMessage = error,
+                    StatusCode = (int)response.StatusCode
                 };
             }
 
@@ -44,7 +46,8 @@ namespace MediaAPI.Services
                 return new ProxyResult<TmdbPoster>
                 {
                     Success = false,
-                    ErrorMessage = $"Poster not found for IMDB ID {imdb_id}"
+                    ErrorMessage = $"Poster not found for IMDB ID {imdb_id}",
+                    StatusCode = 404
                 };
             }
 
@@ -56,7 +59,8 @@ namespace MediaAPI.Services
             return new ProxyResult<TmdbPoster>
             {
                 Success = true,
-                Value = tmdbPoster
+                Value = tmdbPoster,
+                StatusCode = 200
             };
         }
     }

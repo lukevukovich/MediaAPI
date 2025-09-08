@@ -22,12 +22,24 @@ builder.Services.AddHttpClient<ITmdbClient, TmdbClient>((sp, client) =>
 
 builder.Services.AddScoped<ITmdbService, TmdbService>();
 builder.Services.AddScoped<IMdbListService, MdbListService>();
+builder.Services.AddScoped<IStremioService, StremioService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseCors();
 app.UseSwagger();
 app.UseSwaggerUI();
 

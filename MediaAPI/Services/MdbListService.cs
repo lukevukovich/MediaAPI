@@ -1,6 +1,6 @@
 using MediaAPI.Http;
 using MediaAPI.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
+using MediaAPI.Models.MdbList;
 using System.Text.Json;
 
 namespace MediaAPI.Services
@@ -16,7 +16,7 @@ namespace MediaAPI.Services
             _service = service;
         }
 
-        public async Task<ProxyResult<MdbList>> ProxyListAsync(string owner, string name, CancellationToken cancellationToken = default)
+        public async Task<ProxyResult<MdbList>> ProxyListAsync(string owner, string name, bool poster = true, CancellationToken cancellationToken = default)
         {
             var response = await _client.GetListAsync(owner, name, cancellationToken);
             if (!response.IsSuccessStatusCode)
@@ -25,7 +25,8 @@ namespace MediaAPI.Services
                 return new ProxyResult<MdbList>
                 {
                     Success = false,
-                    ErrorMessage = error
+                    ErrorMessage = error,
+                    StatusCode = (int)response.StatusCode
                 };
             }
 
@@ -35,7 +36,8 @@ namespace MediaAPI.Services
                 return new ProxyResult<MdbList>
                 {
                     Success = false,
-                    ErrorMessage = "MDBList is empty or does not exist."
+                    ErrorMessage = "MDBList is empty or does not exist.",
+                    StatusCode = 404
                 };
             }
 
@@ -47,6 +49,25 @@ namespace MediaAPI.Services
             var deserializedList = await JsonSerializer.DeserializeAsync<List<MdbItem>>(stream, options, cancellationToken);
             var itemList = deserializedList?.Where(item => item.ImdbId is not null).ToList() ?? new List<MdbItem>();
 
+            if (poster)
+                await AddPosterUrls(itemList, cancellationToken);
+
+            var mdbList = new MdbList
+            {
+                Name = name,
+                Owner = owner,
+                Items = itemList
+            };
+            return new ProxyResult<MdbList>
+            {
+                Success = true,
+                Value = mdbList,
+                StatusCode = 200
+            };
+        }
+
+        public async Task AddPosterUrls(List<MdbItem> itemList, CancellationToken cancellationToken = default)
+        {
             var semaphore = new SemaphoreSlim(5);
             var tasks = itemList
                 .Where(item => !string.IsNullOrEmpty(item.ImdbId) && item.ImdbId.StartsWith("tt"))
@@ -67,31 +88,6 @@ namespace MediaAPI.Services
                 });
 
             await Task.WhenAll(tasks);
-
-            if (itemList != null && itemList.Any(x =>
-                !string.IsNullOrWhiteSpace(x.ImdbId) ||
-                !string.IsNullOrWhiteSpace(x.Title)))
-            {
-                var mdbList = new MdbList
-                {
-                    Name = name,
-                    Owner = owner,
-                    Items = itemList
-                };
-                return new ProxyResult<MdbList>
-                {
-                    Success = true,
-                    Value = mdbList
-                };
-            }
-            else
-            {
-                return new ProxyResult<MdbList>
-                {
-                    Success = false,
-                    ErrorMessage = "MDBList could not be retrieved."
-                };
-            }
         }
     }
 }

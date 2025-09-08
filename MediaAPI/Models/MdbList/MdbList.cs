@@ -1,4 +1,4 @@
-namespace MediaAPI.Models
+namespace MediaAPI.Models.MdbList
 {
     public class MdbList
     {

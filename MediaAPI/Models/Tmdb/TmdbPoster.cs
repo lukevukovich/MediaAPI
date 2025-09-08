@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MediaAPI.Models
+namespace MediaAPI.Models.Tmdb
 {
     public class TmdbPoster
     {
