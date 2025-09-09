@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MediaAPI.Services;
 using MediaAPI.Models.Stremio;
+using System.Collections.Specialized;
 
 namespace MediaAPI.Controllers
 {
@@ -35,17 +36,17 @@ namespace MediaAPI.Controllers
                     new Catalog { Type = "movie", Id = "slasher", Name = "Luke's Slasher Films", Extra = [
                         new Extra {
                             Name = "franchise",
-                            Options = ["Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Thanksgiving", "Black Christmas"],
+                            Options = ["All", "Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Thanksgiving", "Black Christmas"],
                             IsRequired = true
                         }
-                    ]},
+                    ], ExtraRequired = ["franchise"] },
                     new Catalog { Type = "movie", Id = "horror", Name = "Luke's Horror Movies", Extra = [
                         new Extra {
                             Name = "franchise",
-                            Options = ["The Conjuring Universe", "Insidious", "Paranormal Activity", "The Exorcist", "Saw", "Pet Sematary", "The Grudge", "The Evil Dead", "Ari Aster"],
+                            Options = ["All", "The Conjuring Universe", "Insidious", "Paranormal Activity", "The Exorcist", "Pet Sematary", "The Evil Dead", "The Grudge", "Ari Aster"],
                             IsRequired = true
                         }
-                    ]},
+                    ], ExtraRequired = ["franchise"] },
                     new Catalog { Type = "movie", Id = "gangster", Name = "Luke's Gangster Movies" }
                 ]
             };
@@ -61,18 +62,18 @@ namespace MediaAPI.Controllers
         {
             var owner = "slander2328";
             var name = "slasher-movies";
-            var franchiseMap = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
+            var franchiseMap = new OrderedDictionary(StringComparer.OrdinalIgnoreCase)
             {
-                { "halloween", ["halloween", "myers"] },
-                { "friday the 13th", ["friday the 13th", "jason", "voorhees", "never hike alone"] },
-                { "a nightmare on elm street", ["nightmare on elm street", "new nightmare", "freddy"] },
-                { "texas chainsaw massacre", ["texas chainsaw", "texas chain saw", "leatherface"] },
-                { "scream", ["scream", "woodsboro"] },
-                { "child's play", ["child's play", "chucky"] },
-                { "terrifier", ["terrifier", "art the clown", "the mean one"] },
-                { "hatchet", ["hatchet", "victor crowley"] },
-                { "thanksgiving", ["thanksgiving"] },
-                { "black christmas", ["black christmas"] }
+                { "halloween", new List<string> { "halloween", "myers" } },
+                { "friday the 13th", new List<string> { "friday the 13th", "jason", "voorhees", "never hike alone" } },
+                { "a nightmare on elm street", new List<string> { "nightmare on elm street", "new nightmare", "freddy" } },
+                { "texas chainsaw massacre", new List<string> { "texas chainsaw", "texas chain saw", "leatherface" } },
+                { "scream", new List<string> { "scream", "woodsboro" } },
+                { "child's play", new List<string> { "child's play", "chucky" } },
+                { "terrifier", new List<string> { "terrifier", "art the clown", "the mean one" } },
+                { "hatchet", new List<string> { "hatchet", "victor crowley" } },
+                { "thanksgiving", new List<string> { "thanksgiving" } },
+                { "black christmas", new List<string> { "black christmas" } }
             };
 
             var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, CatalogSortEnum.YearAscending, cancellationToken);
@@ -90,17 +91,16 @@ namespace MediaAPI.Controllers
         {
             var owner = "chimaklesel";
             var name = "horror";
-            var franchiseMap = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
+            var franchiseMap = new OrderedDictionary(StringComparer.OrdinalIgnoreCase)
             {
-                { "the conjuring universe", ["the conjuring", "annabelle", "the nun", "the curse of la llorona"] },
-                { "insidious", ["insidious"] },
-                { "paranormal activity", ["paranormal activity"] },
-                { "the exorcist", ["exorcist"] },
-                { "saw", ["saw"] },
-                { "pet sematary", ["pet sematary"] },
-                { "the grudge", ["grudge"] },
-                { "the evil dead", ["evil dead", "army of darkness"] },
-                { "ari aster", ["hereditary", "midsommar"] }
+                { "the conjuring universe", new List<string> { "the conjuring", "annabelle", "the nun", "the curse of la llorona" } },
+                { "insidious", new List<string> { "insidious" } },
+                { "paranormal activity", new List<string> { "paranormal activity" } },
+                { "the exorcist", new List<string> { "exorcist" } },
+                { "pet sematary", new List<string> { "pet sematary" } },
+                { "the evil dead", new List<string> { "evil dead", "army of darkness" } },
+                { "the grudge", new List<string> { "grudge" } },
+                { "ari aster", new List<string> { "hereditary", "midsommar" } }
             };
 
             var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, CatalogSortEnum.YearAscending, cancellationToken);

@@ -1,5 +1,8 @@
 using MediaAPI.Models;
 using MediaAPI.Models.Stremio;
+using MediaAPI.Models.MdbList;
+using System.Collections.Specialized;
+using System.Collections;
 
 namespace MediaAPI.Services
 {
@@ -12,12 +15,12 @@ namespace MediaAPI.Services
             _mdbListService = mdbListService;
         }
 
-        public async Task<ProxyResult<CatalogMetas>> ProxyCatalogMetasAsync(string owner, string name, string? filter, Dictionary<string, List<string>>? filterMap, CatalogSortEnum? sortBy, CancellationToken cancellationToken = default)
+        public async Task<ProxyResult<CatalogMetas>> ProxyCatalogMetasAsync(string owner, string name, string? filter, OrderedDictionary? filterMap, CatalogSortEnum? sortBy, CancellationToken cancellationToken = default)
         {
             if (filter is not null && filter.Contains('='))
                 filter = filter.Split('=')[1];
             
-            if (filterMap is not null && !filterMap.ContainsKey(filter ?? string.Empty))
+            if (filterMap is not null && !filterMap.Contains(filter ?? string.Empty) && !string.Equals(filter, "all", StringComparison.OrdinalIgnoreCase))
             {
                 return new ProxyResult<CatalogMetas>
                 {
@@ -49,12 +52,41 @@ namespace MediaAPI.Services
                 };
             }
 
-            var filteredItems = string.IsNullOrWhiteSpace(filter) || filterMap is null || !filterMap.TryGetValue(filter, out List<string>? value) ? mdbList.Items
-                : mdbList.Items.Where(item => value.Any(f => item.Title!.Contains(f, StringComparison.OrdinalIgnoreCase)));
+            var filteredItems = Enumerable.Empty<MdbItem>();
+            if (filterMap is not null && string.Equals(filter, "all", StringComparison.OrdinalIgnoreCase))
+            {
+                var orderedKeys = filterMap.Cast<DictionaryEntry>()
+                    .Select(entry => (string)entry.Key)
+                    .ToList();
 
+                filteredItems = mdbList.Items
+                    .Where(item => filterMap.Cast<DictionaryEntry>()
+                        .SelectMany(entry => (List<string>)entry.Value!)
+                        .Any(f => item.Title?.Contains(f, StringComparison.OrdinalIgnoreCase) == true))
+                    .OrderBy(item =>
+                    {
+                        var matchIndex = orderedKeys.FindIndex(k =>
+                        {
+                            var values = (List<string>)filterMap[k]!;
+                            return values.Any(f => item.Title?.Contains(f, StringComparison.OrdinalIgnoreCase) == true);
+                        });
+                        return matchIndex == -1 ? int.MaxValue : matchIndex;
+                    });
+            }
+            else if (filterMap is not null)
+            {
+                List<string>? value = null;
+                value = filterMap[filter!] as List<string>;
+                filteredItems = string.IsNullOrWhiteSpace(filter) || filterMap is null || value == null
+                    ? mdbList.Items
+                    : mdbList.Items.Where(item => value.Any(f => item.Title!.Contains(f, StringComparison.OrdinalIgnoreCase)));
+            }
+            else
+                filteredItems = mdbList.Items;
+                
             await _mdbListService.AddPosterUrls([.. filteredItems], cancellationToken);
 
-            if (sortBy.HasValue)
+            if (sortBy.HasValue && !string.Equals(filter, "all", StringComparison.OrdinalIgnoreCase))
             {
                 filteredItems = sortBy.Value switch
                 {

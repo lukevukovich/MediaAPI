@@ -8,6 +8,7 @@ MediaAPI is a .NET Web API that aggregates media data from external sources like
 ## Stremio Endpoints
 - `GET /stremio/manifest.json`: Returns the Stremio add-on manifest.
 - `GET /stremio/catalog/movie/slasher/{franchise}.json`: Retrieves the Slasher Films catalog from MDBList, with optional filtering by franchise. Supported franchises include:
+    - All
     - Halloween
     - Friday the 13th
     - A Nightmare on Elm Street
@@ -19,11 +20,11 @@ MediaAPI is a .NET Web API that aggregates media data from external sources like
     - Thanksgiving
     - Black Christmas
 - `Get /stremio/catalog/movie/horror.json`: Retrieves the Horror Movies catalog from MDBList, with optional filtering by franchise. Supported franchises include:
+    - All
     - The Conjuring Universe
     - Insidious
     - Paranormal Activity
     - The Exorcist
-    - Saw
     - Pet Sematary
     - The Grudge
     - The Evil Dead
