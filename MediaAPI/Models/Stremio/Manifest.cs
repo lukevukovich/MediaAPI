@@ -6,6 +6,7 @@ namespace MediaAPI.Models.Stremio
         public string Version { get; set; } = "1.0.0";
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string? Logo { get; set; } = null;
         public List<string> Types { get; set; } = [];
         public List<string> Resources { get; set; } = [];
         public List<string> IdPrefixes { get; set; } = [];

@@ -12,10 +12,20 @@ namespace MediaAPI.Services
             _mdbListService = mdbListService;
         }
 
-        public async Task<ProxyResult<CatalogMetas>> ProxyCatalogMetasAsync(string owner, string name, string? filter, Dictionary<string, List<string>>? filterMap, CancellationToken cancellationToken = default)
+        public async Task<ProxyResult<CatalogMetas>> ProxyCatalogMetasAsync(string owner, string name, string? filter, Dictionary<string, List<string>>? filterMap, CatalogSortEnum? sortBy, CancellationToken cancellationToken = default)
         {
-            if (filter is not null && filter.Contains("="))
-                filter = filter.Split("=")[1];
+            if (filter is not null && filter.Contains('='))
+                filter = filter.Split('=')[1];
+            
+            if (filterMap is not null && !filterMap.ContainsKey(filter ?? string.Empty))
+            {
+                return new ProxyResult<CatalogMetas>
+                {
+                    Success = false,
+                    ErrorMessage = $"Invalid filter value: {filter}",
+                    StatusCode = 400
+                };
+            }
 
             var result = await _mdbListService.ProxyListAsync(owner, name, poster: false, cancellationToken: cancellationToken);
             if (!result.Success)
@@ -42,7 +52,19 @@ namespace MediaAPI.Services
             var filteredItems = string.IsNullOrWhiteSpace(filter) || filterMap is null || !filterMap.TryGetValue(filter, out List<string>? value) ? mdbList.Items
                 : mdbList.Items.Where(item => value.Any(f => item.Title!.Contains(f, StringComparison.OrdinalIgnoreCase)));
 
-            await _mdbListService.AddPosterUrls(filteredItems.ToList(), cancellationToken);
+            await _mdbListService.AddPosterUrls([.. filteredItems], cancellationToken);
+
+            if (sortBy.HasValue)
+            {
+                filteredItems = sortBy.Value switch
+                {
+                    CatalogSortEnum.NameAscending => filteredItems.OrderBy(item => item.Title),
+                    CatalogSortEnum.NameDescending => filteredItems.OrderByDescending(item => item.Title),
+                    CatalogSortEnum.YearAscending => filteredItems.OrderBy(item => item.ReleaseYear),
+                    CatalogSortEnum.YearDescending => filteredItems.OrderByDescending(item => item.ReleaseYear),
+                    _ => filteredItems
+                };
+            }
 
             var catalog = new CatalogMetas
             {

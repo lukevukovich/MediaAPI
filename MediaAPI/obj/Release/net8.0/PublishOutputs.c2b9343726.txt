@@ -1,0 +1,13 @@
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\MediaAPI.exe
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\appsettings.Development.json
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\appsettings.json
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\MediaAPI.dll
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\MediaAPI.deps.json
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\MediaAPI.runtimeconfig.json
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\MediaAPI.pdb
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\Microsoft.AspNetCore.OpenApi.dll
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\Microsoft.OpenApi.dll
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.Swagger.dll
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.SwaggerGen.dll
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\Swashbuckle.AspNetCore.SwaggerUI.dll
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Release\net8.0\publish\MediaAPI.xml

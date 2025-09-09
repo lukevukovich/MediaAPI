@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "EOx6o1nuIZ5AZjPKlrfLgkjXWbV/lYHT8w4dMFRkHA0=",
+  "Source": "MediaAPI",
+  "BasePath": "_content/MediaAPI",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "MediaAPI\\wwwroot",
+      "Source": "MediaAPI",
+      "ContentRoot": "F:\\Programming\\C#\\MediaAPI\\MediaAPI\\wwwroot\\",
+      "BasePath": "_content/MediaAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "F:\\Programming\\C#\\MediaAPI\\MediaAPI\\wwwroot\\images\\logo.png",
+      "SourceId": "MediaAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\Programming\\C#\\MediaAPI\\MediaAPI\\wwwroot\\",
+      "BasePath": "_content/MediaAPI",
+      "RelativePath": "images/logo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\logo.png"
+    }
+  ]
+}

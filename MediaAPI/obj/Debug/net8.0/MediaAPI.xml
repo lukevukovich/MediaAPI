@@ -29,9 +29,14 @@
             Get the Slasher Films catalog from MDBList, optionally filtered by franchise.
             </summary>
         </member>
+        <member name="M:MediaAPI.Controllers.StremioController.GetHorrorCatalogAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get the Horror Movies catalog from MDBList, optionally filtered by franchise.
+            </summary>
+        </member>
         <member name="M:MediaAPI.Controllers.StremioController.GetGangsterCatalogAsync(System.Threading.CancellationToken)">
             <summary>
-            Get the Gangster Movies catalog from MDBList, optionally filtered by franchise.
+            Get the Gangster Movies catalog from MDBList.
             </summary>
         </member>
     </members>

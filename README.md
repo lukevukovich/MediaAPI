@@ -18,4 +18,14 @@ MediaAPI is a .NET Web API that aggregates media data from external sources like
     - Hatchet
     - Thanksgiving
     - Black Christmas
+- `Get /stremio/catalog/movie/horror.json`: Retrieves the Horror Movies catalog from MDBList, with optional filtering by franchise. Supported franchises include:
+    - The Conjuring Universe
+    - Insidious
+    - Paranormal Activity
+    - The Exorcist
+    - Saw
+    - Pet Sematary
+    - The Grudge
+    - The Evil Dead
+    - Ari Aster
 - `GET /stremio/catalog/movie/gangster.json`: Retrieves the Gangster Movies catalog from MDBList.

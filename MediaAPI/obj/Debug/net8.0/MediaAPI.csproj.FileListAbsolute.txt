@@ -34,3 +34,4 @@ F:\Programming\C#\MediaAPI\MediaAPI\obj\Debug\net8.0\MediaAPI.genruntimeconfig.c
 F:\Programming\C#\MediaAPI\MediaAPI\obj\Debug\net8.0\ref\MediaAPI.dll
 F:\Programming\C#\MediaAPI\MediaAPI\bin\Debug\net8.0\MediaAPI.xml
 F:\Programming\C#\MediaAPI\MediaAPI\obj\Debug\net8.0\MediaAPI.xml
+F:\Programming\C#\MediaAPI\MediaAPI\bin\Debug\net8.0\MediaAPI.staticwebassets.runtime.json

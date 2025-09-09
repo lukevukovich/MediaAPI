@@ -24,21 +24,29 @@ namespace MediaAPI.Controllers
             var manifest = new Manifest
             {
                 Id = "stremio.luke.catalog",
-                Version = "1.0.0",
+                Version = "1.0.1",
                 Name = "Luke's Catalogs",
                 Description = "A collection of Luke's favorite catalogs.",
+                Logo = "http://localhost:5143/images/logo.png",
                 Types = ["movie", "series"],
                 Resources = ["catalog"],
                 IdPrefixes = ["tt"],
                 Catalogs = [
-                    new Catalog { Type = "movie", Id = "slasher", Name = "Slasher Films", Extra = [
+                    new Catalog { Type = "movie", Id = "slasher", Name = "Luke's Slasher Films", Extra = [
                         new Extra {
                             Name = "franchise",
                             Options = ["Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Thanksgiving", "Black Christmas"],
                             IsRequired = true
                         }
                     ]},
-                    new Catalog { Type = "movie", Id = "gangster", Name = "Gangster Movies" }
+                    new Catalog { Type = "movie", Id = "horror", Name = "Luke's Horror Movies", Extra = [
+                        new Extra {
+                            Name = "franchise",
+                            Options = ["The Conjuring Universe", "Insidious", "Paranormal Activity", "The Exorcist", "Saw", "Pet Sematary", "The Grudge", "The Evil Dead", "Ari Aster"],
+                            IsRequired = true
+                        }
+                    ]},
+                    new Catalog { Type = "movie", Id = "gangster", Name = "Luke's Gangster Movies" }
                 ]
             };
 
@@ -67,7 +75,7 @@ namespace MediaAPI.Controllers
                 { "black christmas", ["black christmas"] }
             };
 
-            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, cancellationToken);
+            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, CatalogSortEnum.YearAscending, cancellationToken);
             if (!response.Success)
                 return Problem(response.ErrorMessage, statusCode: response.StatusCode);
             
@@ -75,7 +83,35 @@ namespace MediaAPI.Controllers
         }
 
         /// <summary>
-        /// Get the Gangster Movies catalog from MDBList, optionally filtered by franchise.
+        /// Get the Horror Movies catalog from MDBList, optionally filtered by franchise.
+        /// </summary>
+        [HttpGet("catalog/movie/horror/{franchise}.json")]
+        public async Task<IActionResult> GetHorrorCatalogAsync([FromRoute] string franchise, CancellationToken cancellationToken = default)
+        {
+            var owner = "chimaklesel";
+            var name = "horror";
+            var franchiseMap = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "the conjuring universe", ["the conjuring", "annabelle", "the nun", "the curse of la llorona"] },
+                { "insidious", ["insidious"] },
+                { "paranormal activity", ["paranormal activity"] },
+                { "the exorcist", ["exorcist"] },
+                { "saw", ["saw"] },
+                { "pet sematary", ["pet sematary"] },
+                { "the grudge", ["grudge"] },
+                { "the evil dead", ["evil dead", "army of darkness"] },
+                { "ari aster", ["hereditary", "midsommar"] }
+            };
+
+            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, CatalogSortEnum.YearAscending, cancellationToken);
+            if (!response.Success)
+                return Problem(response.ErrorMessage, statusCode: response.StatusCode);
+
+            return Ok(response.Value);
+        }
+
+        /// <summary>
+        /// Get the Gangster Movies catalog from MDBList.
         /// </summary>
         [HttpGet("catalog/movie/gangster.json")]
         public async Task<IActionResult> GetGangsterCatalogAsync(CancellationToken cancellationToken = default)
@@ -83,7 +119,7 @@ namespace MediaAPI.Controllers
             var owner = "slander2328";
             var name = "gangster-movies-xhebzvlfgb";
 
-            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, null, null, cancellationToken);
+            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, null, null, null, cancellationToken);
             if (!response.Success)
                 return Problem(response.ErrorMessage, statusCode: response.StatusCode);
 

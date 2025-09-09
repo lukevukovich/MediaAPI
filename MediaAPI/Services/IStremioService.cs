@@ -5,6 +5,6 @@ namespace MediaAPI.Services
 {
     public interface IStremioService
     {
-        Task<ProxyResult<CatalogMetas>> ProxyCatalogMetasAsync(string owner, string name, string? filter, Dictionary<string, List<string>>? filterMap, CancellationToken cancellationToken = default);
+        Task<ProxyResult<CatalogMetas>> ProxyCatalogMetasAsync(string owner, string name, string? filter, Dictionary<string, List<string>>? filterMap, CatalogSortEnum? sortBy, CancellationToken cancellationToken = default);
     }
 }
