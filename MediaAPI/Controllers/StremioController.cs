@@ -27,7 +27,7 @@ namespace MediaAPI.Controllers
                 Version = "1.0.1",
                 Name = "Luke's Catalogs",
                 Description = "A collection of Luke's favorite catalogs.",
-                Logo = "http://localhost:5143/images/logo.png",
+                Logo = "http://media-api.us-east-2.elasticbeanstalk.com/images/logo.png",
                 Types = ["movie", "series"],
                 Resources = ["catalog"],
                 IdPrefixes = ["tt"],
