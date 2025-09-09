@@ -35,18 +35,18 @@ namespace MediaAPI.Controllers
                 Catalogs = [
                     new Catalog { Type = "movie", Id = "slasher", Name = "Luke's Slasher Films", Extra = [
                         new Extra {
-                            Name = "franchise",
+                            Name = "genre",
                             Options = ["All", "Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Thanksgiving", "Black Christmas"],
                             IsRequired = true
                         }
-                    ], ExtraRequired = ["franchise"] },
+                    ]},
                     new Catalog { Type = "movie", Id = "horror", Name = "Luke's Horror Movies", Extra = [
                         new Extra {
-                            Name = "franchise",
+                            Name = "genre",
                             Options = ["All", "The Conjuring Universe", "Insidious", "Paranormal Activity", "The Exorcist", "Pet Sematary", "The Evil Dead", "The Grudge", "Ari Aster"],
                             IsRequired = true
                         }
-                    ], ExtraRequired = ["franchise"] },
+                    ]},
                     new Catalog { Type = "movie", Id = "gangster", Name = "Luke's Gangster Movies" }
                 ]
             };
@@ -58,7 +58,7 @@ namespace MediaAPI.Controllers
         /// Get the Slasher Films catalog from MDBList, optionally filtered by franchise.
         /// </summary>
         [HttpGet("catalog/movie/slasher/{franchise}.json")]
-        public async Task<IActionResult> GetSlasherCatalogAsync([FromRoute] string franchise, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> GetSlasherCatalogFilterAsync([FromRoute] string franchise, CancellationToken cancellationToken = default)
         {
             var owner = "slander2328";
             var name = "slasher-movies";

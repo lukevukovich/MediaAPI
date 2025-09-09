@@ -83,7 +83,7 @@ namespace MediaAPI.Services
             }
             else
                 filteredItems = mdbList.Items;
-                
+
             await _mdbListService.AddPosterUrls([.. filteredItems], cancellationToken);
 
             if (sortBy.HasValue && !string.Equals(filter, "all", StringComparison.OrdinalIgnoreCase))
@@ -92,8 +92,8 @@ namespace MediaAPI.Services
                 {
                     CatalogSortEnum.NameAscending => filteredItems.OrderBy(item => item.Title),
                     CatalogSortEnum.NameDescending => filteredItems.OrderByDescending(item => item.Title),
-                    CatalogSortEnum.YearAscending => filteredItems.OrderBy(item => item.ReleaseYear),
-                    CatalogSortEnum.YearDescending => filteredItems.OrderByDescending(item => item.ReleaseYear),
+                    CatalogSortEnum.YearAscending => filteredItems.OrderBy(item => item.ReleaseYear ?? int.MaxValue),
+                    CatalogSortEnum.YearDescending => filteredItems.OrderByDescending(item => item.ReleaseYear ?? int.MinValue),
                     _ => filteredItems
                 };
             }

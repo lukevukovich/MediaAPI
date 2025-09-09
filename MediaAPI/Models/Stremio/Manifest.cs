@@ -10,6 +10,7 @@ namespace MediaAPI.Models.Stremio
         public List<string> Types { get; set; } = [];
         public List<string> Resources { get; set; } = [];
         public List<string> IdPrefixes { get; set; } = [];
+        public List<string> ExtraSupported { get; set; } = [];
         public List<Catalog> Catalogs { get; set; } = [];
     }
 }
