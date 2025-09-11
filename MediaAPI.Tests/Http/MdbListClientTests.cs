@@ -6,14 +6,8 @@ namespace MediaAPI.Tests.Http
 {
     public class MdbListClientTests
     {
-        [Fact]
-        public async Task GetListAsync_ReturnsSuccess()
+        private static MdbListClient CreateClient(HttpResponseMessage fakeResponse)
         {
-            var fakeResponse = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
-            {
-                Content = new StringContent("{\"status\":\"ok\"}")
-            };
-
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -28,8 +22,18 @@ namespace MediaAPI.Tests.Http
             {
                 BaseAddress = new Uri("https://api.mdblist.com/")
             };
+            return new MdbListClient(httpClient);
+        }
 
-            var mdbListClient = new MdbListClient(httpClient);
+        [Fact]
+        public async Task GetListAsync_ReturnsSuccess()
+        {
+            var fakeResponse = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+            {
+                Content = new StringContent("{\"status\":\"ok\"}")
+            };
+
+            var mdbListClient = CreateClient(fakeResponse);
             var response = await mdbListClient.GetListAsync("owner", "name");
 
             response.EnsureSuccessStatusCode();
@@ -45,22 +49,7 @@ namespace MediaAPI.Tests.Http
                 Content = new StringContent("{\"status\":\"error\",\"message\":\"Not Found\"}")
             };
 
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            handlerMock.Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(fakeResponse)
-                .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("https://api.mdblist.com/")
-            };
-
-            var mdbListClient = new MdbListClient(httpClient);
+            var mdbListClient = CreateClient(fakeResponse);
             var response = await mdbListClient.GetListAsync("owner", "name");
             Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
