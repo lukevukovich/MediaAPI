@@ -78,7 +78,7 @@ namespace MediaAPI.Controllers
                 { "miscellaneous", new List<string> { "american psycho", "thanksgiving", "the mean one", "heart eyes", "trick 'r treat", "my bloody valentine", "five nights at freddy's", "the shining", "candyman", "hellraiser", "wrong turn", "the hills have eyes", "children of the corn", "the terminator", "i know what you did last summer" } }
             };
 
-            if (franchiseMap.Contains('='))
+            if (franchise.Contains('='))
                 franchise = franchise.Split('=')[1];
 
             var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, string.Equals(franchise, "miscellaneous", StringComparison.OrdinalIgnoreCase) ? CatalogSortEnum.NameAscending : CatalogSortEnum.YearAscending, cancellationToken);
@@ -109,7 +109,7 @@ namespace MediaAPI.Controllers
                 { "miscellaneous", new List<string> { "hereditary", "midsommar", "longlegs", "it follows", "smile", "talk to me", "nosferatu", "nope", "get out", "the invisible man", "jaws", "cloverfield" } }
             };
 
-            if (franchiseMap.Contains('='))
+            if (franchise.Contains('='))
                 franchise = franchise.Split('=')[1];
 
             var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, string.Equals(franchise, "miscellaneous", StringComparison.OrdinalIgnoreCase) ? CatalogSortEnum.NameAscending : CatalogSortEnum.YearAscending, cancellationToken);
