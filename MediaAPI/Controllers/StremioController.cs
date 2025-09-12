@@ -74,12 +74,14 @@ namespace MediaAPI.Controllers
                 { "hatchet", new List<string> { "hatchet", "victor crowley" } },
                 { "black christmas", new List<string> { "black christmas" } },
                 { "jeepers creepers", new List<string> { "jeepers creepers", "the creeper" } },
-                { "i know what you did last summer", new List<string> { "i know what you did last summer" } },
                 { "the strangers", new List<string> { "the strangers" } },
-                { "miscellaneous", new List<string> { "american psycho", "thanksgiving", "the mean one", "heart eyes", "trick 'r treat", "my bloody valentine", "five nights at freddy's", "the shining", "candyman", "hellraiser", "wrong turn", "the hills have eyes", "children of the corn", "the terminator" } }
+                { "miscellaneous", new List<string> { "american psycho", "thanksgiving", "the mean one", "heart eyes", "trick 'r treat", "my bloody valentine", "five nights at freddy's", "the shining", "candyman", "hellraiser", "wrong turn", "the hills have eyes", "children of the corn", "the terminator", "i know what you did last summer" } }
             };
 
-            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, franchise != "miscellaneous" ? CatalogSortEnum.YearAscending : CatalogSortEnum.NameAscending, cancellationToken);
+            if (franchiseMap.Contains('='))
+                franchise = franchise.Split('=')[1];
+
+            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, string.Equals(franchise, "miscellaneous", StringComparison.OrdinalIgnoreCase) ? CatalogSortEnum.NameAscending : CatalogSortEnum.YearAscending, cancellationToken);
             if (!response.Success)
                 return Problem(response.ErrorMessage, statusCode: response.StatusCode);
             
@@ -107,7 +109,10 @@ namespace MediaAPI.Controllers
                 { "miscellaneous", new List<string> { "hereditary", "midsommar", "longlegs", "it follows", "smile", "talk to me", "nosferatu", "nope", "get out", "the invisible man", "jaws", "cloverfield" } }
             };
 
-            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, franchise != "miscellaneous" ? CatalogSortEnum.YearAscending : CatalogSortEnum.NameAscending, cancellationToken);
+            if (franchiseMap.Contains('='))
+                franchise = franchise.Split('=')[1];
+
+            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, string.Equals(franchise, "miscellaneous", StringComparison.OrdinalIgnoreCase) ? CatalogSortEnum.NameAscending : CatalogSortEnum.YearAscending, cancellationToken);
             if (!response.Success)
                 return Problem(response.ErrorMessage, statusCode: response.StatusCode);
 
