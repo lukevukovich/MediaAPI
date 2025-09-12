@@ -3,51 +3,58 @@ using Microsoft.Extensions.Options;
 using MediaAPI.Http;
 using MediaAPI.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace MediaAPI {
+    public class Program {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<MdbListOptions>(builder.Configuration.GetSection("MdbListOptions"));
-builder.Services.Configure<TmdbOptions>(builder.Configuration.GetSection("TmdbOptions"));
+            builder.Services.Configure<MdbListOptions>(builder.Configuration.GetSection("MdbListOptions"));
+            builder.Services.Configure<TmdbOptions>(builder.Configuration.GetSection("TmdbOptions"));
 
-builder.Services.AddHttpClient<IMdbListClient, MdbListClient>((sp, client) =>
-{
-    var options = sp.GetRequiredService<IOptions<MdbListOptions>>().Value;
-    client.BaseAddress = new Uri(options.BaseUrl);
-});
+            builder.Services.AddHttpClient<IMdbListClient, MdbListClient>((sp, client) =>
+            {
+                var options = sp.GetRequiredService<IOptions<MdbListOptions>>().Value;
+                client.BaseAddress = new Uri(options.BaseUrl);
+            });
 
-builder.Services.AddHttpClient<ITmdbClient, TmdbClient>((sp, client) =>
-{
-    var options = sp.GetRequiredService<IOptions<TmdbOptions>>().Value;
-    client.BaseAddress = new Uri(options.BaseUrl);
-});
+            builder.Services.AddHttpClient<ITmdbClient, TmdbClient>((sp, client) =>
+            {
+                var options = sp.GetRequiredService<IOptions<TmdbOptions>>().Value;
+                client.BaseAddress = new Uri(options.BaseUrl);
+            });
 
-builder.Services.AddScoped<ITmdbService, TmdbService>();
-builder.Services.AddScoped<IMdbListService, MdbListService>();
-builder.Services.AddScoped<IStremioService, StremioService>();
+            builder.Services.AddScoped<ITmdbService, TmdbService>();
+            builder.Services.AddScoped<IMdbListService, MdbListService>();
+            builder.Services.AddScoped<IStremioService, StremioService>();
 
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
-});
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
-var app = builder.Build();
-app.UseCors();
-app.UseSwagger();
-app.UseSwaggerUI();
-app.UseStaticFiles();
-app.MapControllers();
+            var app = builder.Build();
+            app.UseCors();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseStaticFiles();
+            app.MapControllers();
 
-app.Run();
+            app.Run();
+        }
+    }
+}

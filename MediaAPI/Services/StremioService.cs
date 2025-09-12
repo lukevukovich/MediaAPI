@@ -8,7 +8,7 @@ namespace MediaAPI.Services
 {
     public class StremioService : IStremioService
     {
-        private readonly IMdbListService _mdbListService;
+        private readonly IMdbListService _mdbListService; 
 
         public StremioService(IMdbListService mdbListService)
         {
@@ -73,7 +73,7 @@ namespace MediaAPI.Services
                         return matchIndex == -1 ? int.MaxValue : matchIndex;
                     });
             }
-            else if (filterMap is not null)
+            else if (filterMap is not null && !string.IsNullOrWhiteSpace(filter))
             {
                 List<string>? value = null;
                 value = filterMap[filter!] as List<string>;
