@@ -39,7 +39,20 @@ namespace MediaAPI.Services
                 PropertyNameCaseInsensitive = true,
             };
 
-            var tmdbResponse = await JsonSerializer.DeserializeAsync<TmdbResponse>(stream, options, cancellationToken);
+            TmdbResponse? tmdbResponse;
+            try
+            {
+                tmdbResponse = await JsonSerializer.DeserializeAsync<TmdbResponse>(stream, options, cancellationToken);
+            } catch (JsonException ex)
+            {
+                return new ProxyResult<TmdbPoster>
+                {
+                    Success = false,
+                    ErrorMessage = $"Failed to deserialize TMDB JSON: {ex.Message}",
+                    StatusCode = 500
+                };
+            }
+            
             var posterPath = tmdbResponse?.MovieResults?.FirstOrDefault()?.PosterPath ?? tmdbResponse?.TvResults?.FirstOrDefault()?.PosterPath;
             if (string.IsNullOrEmpty(posterPath))
             {

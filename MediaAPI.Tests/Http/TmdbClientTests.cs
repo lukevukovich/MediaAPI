@@ -1,12 +1,14 @@
 using MediaAPI.Http;
+using MediaAPI.Options;
+using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 
 namespace MediaAPI.Tests.Http
 {
-    public class MdbListClientTests
+    public class TmdbClientTests
     {
-        public static MdbListClient CreateClient(HttpResponseMessage fakeResponse)
+        public static (TmdbClient, Mock<IOptions<TmdbOptions>>) CreateClient(HttpResponseMessage fakeResponse)
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock.Protected()
@@ -18,23 +20,30 @@ namespace MediaAPI.Tests.Http
                 .ReturnsAsync(fakeResponse)
                 .Verifiable();
 
+            var optionsMock = new Mock<IOptions<TmdbOptions>>();
+            optionsMock.Setup(o => o.Value).Returns(new TmdbOptions
+            {
+                BaseUrl = "https://api.themoviedb.org/3/",
+                ApiKey = "test_api_key"
+            });
+
             var httpClient = new HttpClient(handlerMock.Object)
             {
-                BaseAddress = new Uri("https://api.mdblist.com/")
+                BaseAddress = new Uri("https://api.themoviedb.org/")
             };
-            return new MdbListClient(httpClient);
+            return (new TmdbClient(httpClient, optionsMock.Object), optionsMock);
         }
 
         [Fact]
-        public async Task GetListAsync_ReturnsSuccess()
+        public async Task GetPosterPathAsync_ReturnsSuccess()
         {
             var fakeResponse = new HttpResponseMessage(System.Net.HttpStatusCode.OK)
             {
                 Content = new StringContent("{\"status\":\"ok\"}")
             };
 
-            var mdbListClient = CreateClient(fakeResponse);
-            var response = await mdbListClient.GetListAsync("owner", "name");
+            var (tmdbClient, _) = CreateClient(fakeResponse);
+            var response = await tmdbClient.GetPosterPathAsync("imdb_id");
 
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
@@ -42,15 +51,15 @@ namespace MediaAPI.Tests.Http
         }
 
         [Fact]
-        public async Task GetListAsync_ReturnsError()
+        public async Task GetPosterPathAsync_ReturnsError()
         {
             var fakeResponse = new HttpResponseMessage(System.Net.HttpStatusCode.NotFound)
             {
                 Content = new StringContent("{\"status\":\"error\",\"message\":\"Not Found\"}")
             };
 
-            var mdbListClient = CreateClient(fakeResponse);
-            var response = await mdbListClient.GetListAsync("owner", "name");
+            var (tmdbClient, _) = CreateClient(fakeResponse);
+            var response = await tmdbClient.GetPosterPathAsync("imdb_id");
             Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
             var content = await response.Content.ReadAsStringAsync();
             Assert.Equal("{\"status\":\"error\",\"message\":\"Not Found\"}", content);

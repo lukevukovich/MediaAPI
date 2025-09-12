@@ -46,7 +46,21 @@ namespace MediaAPI.Services
                 PropertyNameCaseInsensitive = true,
             };
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            var deserializedList = await JsonSerializer.DeserializeAsync<List<MdbItem>>(stream, options, cancellationToken);
+            
+            List<MdbItem>? deserializedList;
+            try
+            {
+                deserializedList = await JsonSerializer.DeserializeAsync<List<MdbItem>>(stream, options, cancellationToken);
+            }
+            catch (JsonException ex)
+            {
+                return new ProxyResult<MdbList>
+                {
+                    Success = false,
+                    ErrorMessage = $"Failed to deserialize MDBList JSON: {ex.Message}",
+                    StatusCode = 500
+                };
+            }
             var itemList = deserializedList?.Where(item => item.ImdbId is not null).ToList() ?? new List<MdbItem>();
 
             if (poster)
