@@ -25,7 +25,7 @@ namespace MediaAPI.Controllers
             var manifest = new Manifest
             {
                 Id = "stremio.luke.catalog",
-                Version = "1.0.1",
+                Version = "1.0.2",
                 Name = "Luke's Catalogs",
                 Description = "A collection of Luke's favorite catalogs.",
                 Logo = "https://www.media-api.dev/images/logo.png",
@@ -36,14 +36,14 @@ namespace MediaAPI.Controllers
                     new Catalog { Type = "movie", Id = "slasher", Name = "Luke's Slasher Films", Extra = [
                         new Extra {
                             Name = "genre",
-                            Options = ["All", "Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Thanksgiving", "Black Christmas"],
+                            Options = ["All", "Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Black Christmas", "Jeepers Creepers", "I Know What You Did Last Summer", "The Strangers", "Miscellaneous"],
                             IsRequired = true
                         }
                     ]},
                     new Catalog { Type = "movie", Id = "horror", Name = "Luke's Horror Movies", Extra = [
                         new Extra {
                             Name = "genre",
-                            Options = ["All", "The Conjuring Universe", "Insidious", "Paranormal Activity", "The Exorcist", "Pet Sematary", "The Evil Dead", "The Grudge", "Ari Aster"],
+                            Options = ["All", "The Conjuring Universe", "Insidious", "Paranormal Activity", "The Exorcist", "Pet Sematary", "The Evil Dead", "The Grudge", "Alien", "Miscellaneous"],
                             IsRequired = true
                         }
                     ]},
@@ -70,13 +70,16 @@ namespace MediaAPI.Controllers
                 { "texas chainsaw massacre", new List<string> { "texas chainsaw", "texas chain saw", "leatherface" } },
                 { "scream", new List<string> { "scream", "woodsboro" } },
                 { "child's play", new List<string> { "child's play", "chucky" } },
-                { "terrifier", new List<string> { "terrifier", "art the clown", "the mean one" } },
+                { "terrifier", new List<string> { "terrifier", "art the clown" } },
                 { "hatchet", new List<string> { "hatchet", "victor crowley" } },
-                { "thanksgiving", new List<string> { "thanksgiving" } },
-                { "black christmas", new List<string> { "black christmas" } }
+                { "black christmas", new List<string> { "black christmas" } },
+                { "jeepers creepers", new List<string> { "jeepers creepers", "the creeper" } },
+                { "i know what you did last summer", new List<string> { "i know what you did last summer" } },
+                { "the strangers", new List<string> { "the strangers" } },
+                { "miscellaneous", new List<string> { "american psycho", "thanksgiving", "the mean one", "heart eyes", "trick 'r treat", "my bloody valentine", "five nights at freddy's", "the shining", "candyman", "hellraiser", "wrong turn", "the hills have eyes", "children of the corn", "the terminator" } }
             };
 
-            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, CatalogSortEnum.YearAscending, cancellationToken);
+            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, franchise != "miscellaneous" ? CatalogSortEnum.YearAscending : CatalogSortEnum.NameAscending, cancellationToken);
             if (!response.Success)
                 return Problem(response.ErrorMessage, statusCode: response.StatusCode);
             
@@ -100,10 +103,11 @@ namespace MediaAPI.Controllers
                 { "pet sematary", new List<string> { "pet sematary" } },
                 { "the evil dead", new List<string> { "evil dead", "army of darkness" } },
                 { "the grudge", new List<string> { "grudge" } },
-                { "ari aster", new List<string> { "hereditary", "midsommar" } }
+                { "alien", new List<string> { "alien", "prometheus" } },
+                { "miscellaneous", new List<string> { "hereditary", "midsommar", "longlegs", "it follows", "smile", "talk to me", "nosferatu", "nope", "get out", "the invisible man", "jaws", "cloverfield" } }
             };
 
-            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, CatalogSortEnum.YearAscending, cancellationToken);
+            var response = await _stremioService.ProxyCatalogMetasAsync(owner, name, franchise, franchiseMap, franchise != "miscellaneous" ? CatalogSortEnum.YearAscending : CatalogSortEnum.NameAscending, cancellationToken);
             if (!response.Success)
                 return Problem(response.ErrorMessage, statusCode: response.StatusCode);
 
