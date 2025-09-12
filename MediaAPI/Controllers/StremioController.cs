@@ -36,7 +36,7 @@ namespace MediaAPI.Controllers
                     new Catalog { Type = "movie", Id = "slasher", Name = "Luke's Slasher Films", Extra = [
                         new Extra {
                             Name = "genre",
-                            Options = ["All", "Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Black Christmas", "Jeepers Creepers", "I Know What You Did Last Summer", "The Strangers", "Miscellaneous"],
+                            Options = ["All", "Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Black Christmas", "Jeepers Creepers", "The Strangers", "Miscellaneous"],
                             IsRequired = true
                         }
                     ]},
