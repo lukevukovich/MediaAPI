@@ -50,7 +50,7 @@ public class StremioController : ControllerBase
                 new Catalog { Type = "movie", Id = "marvel", Name = "Luke's Marvel Movies" , Extra = [
                     new Extra {
                         Name = "genre",
-                        Options = ["Iron Man", "Captain America", "Thor", "The Avengers", "Spider-Man", "Guardians of the Galaxy", "X-Men", "Deadpool", "Doctor Strange", "Black Panther", "Ant-Man", "Miscellaneous"],
+                        Options = ["Iron Man", "Captain America", "Thor", "The Avengers", "Spider-Man", "Guardians of the Galaxy", "Hulk", "X-Men", "Deadpool", "Doctor Strange", "Black Panther", "Ant-Man", "Miscellaneous"],
                         IsRequired = true
                     }
                 ]},
@@ -133,7 +133,7 @@ public class StremioController : ControllerBase
     /// <summary>
     /// Get the Marvel Movies catalog from MDBList, optionally filtered by franchise.
     /// </summary>
-    /// <param name="franchise">The franchise to filter by. Supported franchises: All, Iron Man, Captain America, Thor, The Avengers, Spider-Man, Guardians of the Galaxy, X-Men, Deadpool, Doctor Strange, Black Panther, Ant-Man, Miscellaneous</param>
+    /// <param name="franchise">The franchise to filter by. Supported franchises: All, Iron Man, Captain America, Thor, The Avengers, Spider-Man, Guardians of the Galaxy, Hulk, X-Men, Deadpool, Doctor Strange, Black Panther, Ant-Man, Miscellaneous</param>
     /// <param name="cancellationToken"></param>
     [HttpGet("catalog/movie/marvel/{franchise}.json")]
     public async Task<IActionResult> GetMarvelCatalogAsync([FromRoute] string franchise, CancellationToken cancellationToken = default)
@@ -148,6 +148,7 @@ public class StremioController : ControllerBase
             { "the avengers", new List<string> { "avengers" } },
             { "spider-man", new List<string> { "spider-man", "spiderman" } },
             { "guardians of the galaxy", new List<string> { "guardians of the galaxy" } },
+            { "hulk", new List<string> { "hulk" } },
             { "x-men", new List<string> { "x-men", "wolverine", "logan" } },
             { "deadpool", new List<string> { "deadpool" } },
             { "doctor strange", new List<string> { "doctor strange" } },

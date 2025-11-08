@@ -37,6 +37,7 @@ MediaAPI is a .NET 8 Web API that aggregates media data from external sources li
     - The Avengers
     - Spider-Man
     - Guardians of the Galaxy
+    - Hulk
     - X-Men
     - Deadpool
     - Doctor Strange
