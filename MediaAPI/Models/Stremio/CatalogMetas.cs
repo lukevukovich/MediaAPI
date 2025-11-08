@@ -1,7 +1,6 @@
-namespace MediaAPI.Models.Stremio
+namespace MediaAPI.Models.Stremio;
+
+public class CatalogMetas
 {
-    public class CatalogMetas
-    {
-        public List<CatalogItem> Metas { get; set; } = [];
-    }
+    public List<CatalogItem> Metas { get; set; } = [];
 }

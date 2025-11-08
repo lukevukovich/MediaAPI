@@ -1,7 +1,6 @@
-namespace MediaAPI.Options
+namespace MediaAPI.Options;
+
+public sealed class MdbListOptions
 {
-    public sealed class MdbListOptions
-    {
-        public string BaseUrl { get; set; } = "https://mdblist.com";
-    }
+    public string BaseUrl { get; set; } = "https://mdblist.com";
 }

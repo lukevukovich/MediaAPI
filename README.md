@@ -1,5 +1,5 @@
 # MediaAPI
-MediaAPI is a .NET Web API that aggregates media data from external sources like MDBList and TMDB.
+MediaAPI is a .NET 8 Web API that aggregates media data from external sources like MDBList and TMDB.
 
 ## Media Endpoints
 - `GET /media/list/{owner}/{name}`: Retrieves a media list by owner and name. Aggregates data from MDBList and TMDB.
@@ -19,7 +19,7 @@ MediaAPI is a .NET Web API that aggregates media data from external sources like
     - Hatchet
     - Thanksgiving
     - Black Christmas
-- `Get /stremio/catalog/movie/horror.json`: Retrieves the Horror Movies catalog from MDBList, with optional filtering by franchise. Supported franchises include:
+- `GET /stremio/catalog/movie/horror/{franchise}.json`: Retrieves the Horror Movies catalog from MDBList, with optional filtering by franchise. Supported franchises include:
     - All
     - The Conjuring Universe
     - Insidious
@@ -29,4 +29,18 @@ MediaAPI is a .NET Web API that aggregates media data from external sources like
     - The Grudge
     - The Evil Dead
     - Ari Aster
+- `GET /stremio/catalog/movie/marvel/{franchise}.json`: Retrieves the Marvel Movies catalog from MDBList, with optional filtering by franchise. Supported franchises include:
+    - All
+    - Iron Man
+    - Captain America
+    - Thor
+    - The Avengers
+    - Spider-Man
+    - Guardians of the Galaxy
+    - X-Men
+    - Deadpool
+    - Doctor Strange
+    - Black Panther
+    - Ant-Man
+    - Miscellaneous
 - `GET /stremio/catalog/movie/gangster.json`: Retrieves the Gangster Movies catalog from MDBList.

@@ -1,18 +1,22 @@
-namespace MediaAPI.Http
+namespace MediaAPI.Http;
+
+public interface IMdbListClient
 {
-    public class MdbListClient : IMdbListClient
+    Task<HttpResponseMessage> GetListAsync(string owner, string slug, CancellationToken cancellationToken = default);
+}
+
+public class MdbListClient : IMdbListClient
+{
+    private readonly HttpClient _httpClient;
+
+    public MdbListClient(HttpClient httpClient)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient;
+    }
 
-        public MdbListClient(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
-
-        public async Task<HttpResponseMessage> GetListAsync(string owner, string name, CancellationToken cancellationToken = default)
-        {
-            var requestUrl = $"lists/{owner}/{name}/json";
-            return await _httpClient.GetAsync(requestUrl, cancellationToken);
-        }
+    public async Task<HttpResponseMessage> GetListAsync(string owner, string name, CancellationToken cancellationToken = default)
+    {
+        var requestUrl = $"lists/{owner}/{name}/json";
+        return await _httpClient.GetAsync(requestUrl, cancellationToken);
     }
 }

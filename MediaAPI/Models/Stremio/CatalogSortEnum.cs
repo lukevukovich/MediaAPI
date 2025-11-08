@@ -1,10 +1,9 @@
-namespace MediaAPI.Models.Stremio
+namespace MediaAPI.Models.Stremio;
+
+public enum CatalogSortEnum
 {
-    public enum CatalogSortEnum
-    {
-        NameAscending,
-        NameDescending,
-        YearAscending,
-        YearDescending
-    }
+    NameAscending,
+    NameDescending,
+    YearAscending,
+    YearDescending
 }
