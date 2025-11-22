@@ -1,5 +1,7 @@
-# MediaAPI
+# MediaAPI (Backend)
 MediaAPI is a .NET 8 Web API that aggregates media data from external sources like MDBList and TMDB.
+
+
 
 ## Media Endpoints
 - `GET /media/list/{owner}/{name}`: Retrieves a media list by owner and name. Aggregates data from MDBList and TMDB.

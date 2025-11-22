@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MediaAPI\MediaAPI.csproj" />
+    <ProjectReference Include="..\MediaAPI.Src\MediaAPI.csproj" />
   </ItemGroup>
 
 </Project>

@@ -28,7 +28,7 @@ public class StremioController : ControllerBase
             Version = "1.0.3",
             Name = "Luke's Catalogs",
             Description = "A collection of Luke's favorite catalogs.",
-            Logo = "https://www.media-api.dev/images/logo.png",
+            Logo = "https://api.media-api.dev/images/logo.png",
             Types = ["movie", "series"],
             Resources = ["catalog"],
             IdPrefixes = ["tt"],
