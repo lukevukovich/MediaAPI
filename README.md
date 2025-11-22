@@ -1,0 +1,2 @@
+# MediaAPI
+MediaAPI is a platform that provides RESTful API services for aggregating media data from various external sources. It consists of a backend built with .NET 8 and a frontend built with React.
