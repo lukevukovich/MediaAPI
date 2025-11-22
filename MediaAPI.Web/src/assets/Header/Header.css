@@ -35,7 +35,7 @@ button {
 
 button:hover {
   background-color: rgb(220, 220, 220);
-  transform: scale(107%);
+  transform: scale(104%);
 }
 
 button:active {
