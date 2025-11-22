@@ -1,4 +1,4 @@
-name: Deploy MediaAPI Backend
+name: Deploy Backend (Fly)
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: .NET
+name: Backend CI (.NET)
 
 on:
   push:
@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./MediaAPI.App/MediaAPI.Src
 
     steps:
     - uses: actions/checkout@v4
