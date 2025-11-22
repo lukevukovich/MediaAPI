@@ -64,7 +64,22 @@ public class StremioController : ControllerBase
     /// <summary>
     /// Get the Slasher Films catalog from MDBList, optionally filtered by franchise.
     /// </summary>
-    /// <param name="franchise">The franchise to filter by. Supported franchises: All, Halloween, Friday the 13th, A Nightmare on Elm Street, Texas Chainsaw Massacre, Scream, Child's Play, Terrifier, Hatchet, Black Christmas, Jeepers Creepers, The Strangers, Miscellaneous</param>
+    /// <param name="franchise">
+    /// The franchise to filter by, case insensitive. Supported franchises:
+    /// - All
+    /// - Halloween
+    /// - Friday the 13th
+    /// - A Nightmare on Elm Street
+    /// - Texas Chainsaw Massacre
+    /// - Scream
+    /// - Child's Play
+    /// - Terrifier
+    /// - Hatchet
+    /// - Black Christmas
+    /// - Jeepers Creepers
+    /// - The Strangers
+    /// - Miscellaneous
+    /// </param>
     /// <param name="cancellationToken"></param>
     [HttpGet("catalog/movie/slasher/{franchise}.json")]
     public async Task<IActionResult> GetSlasherCatalogFilterAsync([FromRoute] string franchise, CancellationToken cancellationToken = default)
@@ -100,7 +115,19 @@ public class StremioController : ControllerBase
     /// <summary>
     /// Get the Horror Movies catalog from MDBList, optionally filtered by franchise.
     /// </summary>
-    /// <param name="franchise">The franchise to filter by. Supported franchises: All, The Conjuring Universe, Insidious, Paranormal Activity, The Exorcist, Pet Sematary, The Evil Dead, The Grudge, Alien, Miscellaneous</param>
+    /// <param name="franchise">
+    /// The franchise to filter by, case insensitive. Supported franchises:
+    /// - All
+    /// - The Conjuring Universe
+    /// - Insidious
+    /// - Paranormal Activity
+    /// - The Exorcist
+    /// - Pet Sematary
+    /// - The Evil Dead
+    /// - The Grudge
+    /// - Alien
+    /// - Miscellaneous
+    /// </param>
     /// <param name="cancellationToken"></param>
     [HttpGet("catalog/movie/horror/{franchise}.json")]
     public async Task<IActionResult> GetHorrorCatalogAsync([FromRoute] string franchise, CancellationToken cancellationToken = default)
@@ -133,7 +160,23 @@ public class StremioController : ControllerBase
     /// <summary>
     /// Get the Marvel Movies catalog from MDBList, optionally filtered by franchise.
     /// </summary>
-    /// <param name="franchise">The franchise to filter by. Supported franchises: All, Iron Man, Captain America, Thor, The Avengers, Spider-Man, Guardians of the Galaxy, Hulk, X-Men, Deadpool, Doctor Strange, Black Panther, Ant-Man, Miscellaneous</param>
+    /// <param name="franchise">
+    /// The franchise to filter by, case insensitive. Supported franchises:
+    /// - All
+    /// - Iron Man
+    /// - Captain America
+    /// - Thor
+    /// - The Avengers
+    /// - Spider-Man
+    /// - Guardians of the Galaxy
+    /// - Hulk
+    /// - X-Men
+    /// - Deadpool
+    /// - Doctor Strange
+    /// - Black Panther
+    /// - Ant-Man
+    /// - Miscellaneous
+    /// </param>
     /// <param name="cancellationToken"></param>
     [HttpGet("catalog/movie/marvel/{franchise}.json")]
     public async Task<IActionResult> GetMarvelCatalogAsync([FromRoute] string franchise, CancellationToken cancellationToken = default)
