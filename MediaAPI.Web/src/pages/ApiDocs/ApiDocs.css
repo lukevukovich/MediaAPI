@@ -14,12 +14,19 @@
 }
 
 .api-endpoint {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
+.api-endpoint-left {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 .api-endpoint-right {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
 }

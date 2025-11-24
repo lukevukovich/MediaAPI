@@ -5,7 +5,7 @@ export default function Stremio() {
   return (
     <div className="stremio-page">
       <Header />
-      <h2>Stremio page coming soon...</h2>
+      <h2 className="stremio-tag">Stremio page coming soon...</h2>
     </div>
   );
 }

@@ -1,15 +1,16 @@
 .header {
   display: flex;
   flex-direction: row;
-  width: fit-content;
   align-items: center;
   justify-content: start;
   gap: 20px;
   background-color: rgb(31, 31, 31);
   padding: 15px;
+  padding-right: 18px;
   margin: 15px;
   border-radius: 10px;
-  width: 468px;
+  white-space: nowrap;
+  width: fit-content;
 }
 
 h1 {

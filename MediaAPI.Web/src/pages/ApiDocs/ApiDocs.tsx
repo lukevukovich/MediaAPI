@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Header from "../../assets/Header/Header";
 import { getApiMetadata, type ApiMetadata } from "../../utils/ApiMetadata";
-import "./Documentation.css";
+import "./ApiDocs.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faTag, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Settings from "../../utils/Settings";
 
-export default function Documentation() {
+export default function ApiDocs() {
   const settings = new Settings();
 
   const [apiMetadata, setApiMetadata] = useState<ApiMetadata | null>(null);
