@@ -1,11 +1,14 @@
-import Header from "../Header/Header";
+import Header from "../../assets/Header/Header";
 import "./Home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
+import Settings from "../../utils/Settings";
 
 export default function Home() {
+  const settings = new Settings();
+
   return (
-    <div className="home">
+    <div className="home-page">
       <Header />
       <h2>
         media-api is a platform designed to aggregate and deliver media data
@@ -29,14 +32,14 @@ export default function Home() {
       <h2 className="note">
         media-api by Luke Vukovich
         <a
-          href="https://www.linkedin.com/in/lukevuke/"
+          href={settings.linkedinUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
           <FontAwesomeIcon icon={faLinkedin} className="icon" />
         </a>
         <a
-          href="https://github.com/lukevukovich"
+          href={settings.githubUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
