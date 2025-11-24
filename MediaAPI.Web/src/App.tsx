@@ -8,7 +8,7 @@ import {
 // Layouts and pages
 import RootLayout from "./utils/RootLayout";
 import Home from "./pages/Home/Home";
-import Documentation from "./pages/Documentation/Documentation";
+import ApiDocs from "./pages/ApiDocs/ApiDocs";
 import Stremio from "./pages/Stremio/Stremio";
 
 import "./App.css";
@@ -18,7 +18,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="docs" element={<Documentation />} />
+      <Route path="docs" element={<ApiDocs />} />
       <Route path="stremio" element={<Stremio />} />
     </Route>
   )
