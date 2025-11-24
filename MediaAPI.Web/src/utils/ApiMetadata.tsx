@@ -59,6 +59,5 @@ export async function getApiMetadata() {
   const settings = new Settings();
   const response = await fetch(settings.swaggerUrl);
   const data = await response.json();
-  console.log(data);
   return data;
 }

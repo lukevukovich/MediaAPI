@@ -3,23 +3,40 @@ import Header from "../../assets/Header/Header";
 import { getApiMetadata, type ApiMetadata } from "../../utils/ApiMetadata";
 import "./Documentation.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faTag } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faTag, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Settings from "../../utils/Settings";
 
 export default function Documentation() {
   const settings = new Settings();
+
   const [apiMetadata, setApiMetadata] = useState<ApiMetadata | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [endpoints, setEndpoints] = useState<string[]>([]);
+
+  const [endpointState, setEndpointState] = useState<{
+    [endpoint: string]: string | null;
+  }>({});
+
   const expandEndpointRefs = useRef<{
     [endpoint: string]: HTMLDivElement | null;
   }>({});
   const expandIconRefs = useRef<{
     [endpoint: string]: SVGSVGElement | null;
   }>({});
+  const paramValueRefs = useRef<{
+    [endpoint: string]: {
+      [paramName: string]: HTMLInputElement | null;
+    };
+  }>({});
 
   async function fetchApiMetadata() {
-    const metadata = await getApiMetadata();
+    let metadata: ApiMetadata;
+    try {
+      metadata = await getApiMetadata();
+    } catch (e) {
+      setTags(["Error fetching API metadata"]);
+      return;
+    }
     setApiMetadata(metadata);
     setTags(
       Array.from(
@@ -31,6 +48,12 @@ export default function Documentation() {
       )
     );
     setEndpoints(Object.keys(metadata.paths));
+    setEndpointState(
+      Object.keys(metadata.paths).reduce((acc, endpoint) => {
+        acc[endpoint] = settings.mediaApiUrl + endpoint.substring(1);
+        return acc;
+      }, {} as { [endpoint: string]: string })
+    );
   }
 
   useEffect(() => {
@@ -58,16 +81,50 @@ export default function Documentation() {
     rotateExpandIcon(endpoint);
   }
 
+  function updateEndpointState(endpoint: string) {
+    let ep = settings.mediaApiUrl + endpoint.substring(1);
+    for (let pName in paramValueRefs.current[endpoint]) {
+      let inputRef = paramValueRefs.current[endpoint][pName];
+      if (inputRef) {
+        ep = ep.replace(`{${pName}}`, inputRef.value || `{${pName}}`);
+      }
+    }
+    setEndpointState((prev) => ({
+      ...prev,
+      [endpoint]: ep,
+    }));
+  }
+
   async function executeEndpoint(endpoint: string) {
-    let response = await fetch(settings.mediaApiUrl + endpoint.substring(1));
-    let data = await response.json();
-    // open a new window and display the JSON data
     const newWindow = window.open();
     if (newWindow) {
-      newWindow.document.title = "media-api Result";
+      newWindow.document.title = "media-api Response";
       newWindow.document.body.style.background = "rgb(31, 31, 31)";
       newWindow.document.body.style.color = "rgba(255, 255, 255)";
       newWindow.document.body.style.fontFamily = "monospace";
+      newWindow.document.body.innerHTML = `<pre>Fetching response...</pre>`;
+      const iconSvg = await fetch("/code.svg").then((res) => res.text());
+      const link = newWindow.document.createElement("link");
+      link.rel = "icon";
+      link.href = `data:image/svg+xml,${encodeURIComponent(iconSvg)}`;
+      newWindow.document.head.appendChild(link);
+    }
+
+    let params = paramValueRefs.current[endpoint];
+    for (let paramName in params) {
+      let input = params[paramName];
+      endpoint = endpoint.replace(`{${paramName}}`, input?.value || "");
+    }
+
+    let data: any;
+    try {
+      let response = await fetch(settings.mediaApiUrl + endpoint.substring(1));
+      data = await response.json();
+    } catch (error) {
+      data = { error: "Failed to fetch endpoint." };
+    }
+
+    if (newWindow) {
       newWindow.document.body.innerHTML = `<pre>${JSON.stringify(
         data,
         null,
@@ -98,11 +155,7 @@ export default function Documentation() {
                       <p>{endpoint}</p>
                     </div>
                     <p className="api-summary">
-                      {apiMetadata?.paths?.[endpoint]?.get?.summary ||
-                        apiMetadata?.paths?.[endpoint]?.post?.summary ||
-                        apiMetadata?.paths?.[endpoint]?.put?.summary ||
-                        apiMetadata?.paths?.[endpoint]?.delete?.summary ||
-                        ""}
+                      {apiMetadata?.paths?.[endpoint]?.get?.summary || ""}
                     </p>
                     <div
                       className="api-parameters"
@@ -127,15 +180,49 @@ export default function Documentation() {
                             <p className="param-required">
                               {param.required ? "required" : "optional"}
                             </p>
+                            <div className="param-input-panel">
+                              <input
+                                className="param-value"
+                                placeholder={param.name + " value"}
+                                onChange={() => updateEndpointState(endpoint)}
+                                ref={(el) => {
+                                  if (!paramValueRefs.current[endpoint]) {
+                                    paramValueRefs.current[endpoint] = {};
+                                  }
+                                  paramValueRefs.current[endpoint][param.name] =
+                                    el;
+                                }}
+                              ></input>
+                              <button
+                                className="param-clear-button"
+                                onClick={() => {
+                                  const inputRef =
+                                    paramValueRefs.current[endpoint]?.[
+                                      param.name
+                                    ];
+                                  if (inputRef) {
+                                    inputRef.value = "";
+                                  }
+                                  updateEndpointState(endpoint);
+                                }}
+                              >
+                                <FontAwesomeIcon icon={faTimes} />
+                              </button>
+                            </div>
                           </div>
                         )
                       )}
-                      <button
-                        className="execute-button"
-                        onClick={() => executeEndpoint(endpoint)}
-                      >
-                        Execute
-                      </button>
+                      <div className="execute-panel">
+                        <button
+                          className="execute-button"
+                          onClick={() => executeEndpoint(endpoint)}
+                        >
+                          Execute
+                        </button>
+                        <p className="endpoint-state">
+                          {endpointState[endpoint]}
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <div className="api-endpoint-right">

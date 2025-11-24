@@ -38,6 +38,10 @@
   background-color: rgb(70, 70, 70);
 }
 
+.expand-button:active {
+  background-color: rgb(90, 90, 90);
+}
+
 .expand-icon {
   transition: transform 0.27s ease-in-out;
 }
@@ -86,7 +90,8 @@
 .param-description {
   font-size: 13px;
   color: rgb(172, 172, 172);
-  margin-bottom: 7px;
+  margin-bottom: 6px;
+  margin-top: 1px;
 }
 
 .param-type {
@@ -97,6 +102,46 @@
 .param-required {
   font-size: 12px;
   color: rgb(200, 100, 100);
+}
+
+.param-input-panel {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+input {
+  background-color: rgb(61, 61, 61);
+  border: rgb(153, 153, 153) solid 1px;
+  border-radius: 5px;
+  outline: none;
+  color: white;
+  padding: 5px 5px;
+  font-size: 16px;
+  width: 155px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.param-clear-button {
+  background-color: rgb(102, 27, 27);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 4px 6px;
+  padding-top: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.param-clear-button:hover {
+  background-color: rgb(122, 47, 47);
+}
+
+.param-clear-button:active {
+  background-color: rgb(142, 67, 67);
 }
 
 .execute-button {
@@ -114,4 +159,11 @@
 
 .execute-button:hover {
   background-color: rgb(60, 140, 60);
+}
+
+.endpoint-state {
+  margin-top: 2px;
+  font-size: 13px;
+  color: rgb(131, 131, 131);
+  font-weight: 100;
 }
