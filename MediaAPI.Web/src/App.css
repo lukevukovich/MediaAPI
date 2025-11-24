@@ -19,9 +19,8 @@ h2 {
   background-color: rgb(31, 31, 31);
   padding: 15px;
   margin: 15px;
-  margin-left: 50px;
+  margin-left: 43px;
   border-radius: 10px;
-  min-width: 380px;
   max-width: 920px;
   letter-spacing: 1px;
 }
@@ -33,9 +32,8 @@ h3 {
   background-color: rgb(31, 31, 31);
   padding: 15px;
   margin: 15px;
-  margin-left: 82px;
+  margin-left: 75px;
   border-radius: 10px;
-  min-width: 348px;
   max-width: 888px;
   letter-spacing: 1px;
 }
