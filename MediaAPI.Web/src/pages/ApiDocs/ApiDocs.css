@@ -94,6 +94,10 @@
   transition: max-height 0.27s ease;
 }
 
+.param-name {
+  text-transform: lowercase;
+}
+
 .param-description {
   font-size: 13px;
   color: rgb(172, 172, 172);
@@ -173,4 +177,5 @@ input {
   font-size: 13px;
   color: rgb(131, 131, 131);
   font-weight: 100;
+  margin-bottom: 2px;
 }

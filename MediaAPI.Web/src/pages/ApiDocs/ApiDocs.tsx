@@ -81,6 +81,13 @@ export default function ApiDocs() {
     rotateExpandIcon(endpoint);
   }
 
+  function resizeEndpoint(endpoint: string) {
+    const ref = expandEndpointRefs.current[endpoint];
+    if (ref && ref.classList.contains("expanded")) {
+      ref.style.maxHeight = ref.scrollHeight + "px";
+    }
+  }
+
   function updateEndpointState(endpoint: string) {
     let ep = settings.mediaApiUrl + endpoint.substring(1);
     for (let pName in paramValueRefs.current[endpoint]) {
@@ -132,6 +139,18 @@ export default function ApiDocs() {
       )}</pre>`;
     }
   }
+
+  useEffect(() => {
+    function handleResize() {
+      Object.keys(expandEndpointRefs.current).forEach((endpoint) => {
+        resizeEndpoint(endpoint);
+      });
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className="docs-page">
