@@ -9,10 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./MediaAPI.Web
-
     steps:
       - uses: actions/checkout@v4
 
