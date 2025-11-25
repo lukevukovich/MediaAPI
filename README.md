@@ -1,6 +1,7 @@
 # MediaAPI
+MediaAPI is a full-stack, cloud-deployed media metadata platform featuring a robust .NET backend and a modern React frontend that provides a dynamic, interactive API documentation and testing experience, replacing traditional Swagger UI. The project demonstrates advanced integration, code quality, and user experience best practices.
 
-## 1. Architecture & Technology Stack
+## 1. Architecture & Tech Stack
 
 - **Backend:**  
   - ASP.NET Core (.NET 8) with modular service layer and dependency injection.
@@ -53,8 +54,3 @@
 - Modular, testable backend with clear separation of concerns.
 - Secure, automated deployment pipelines for frontend and backend.
 - Comprehensive error handling and user feedback in UI and API responses.
-
----
-
-**Summary:**  
-MediaAPI is a full-stack, cloud-deployed media metadata platform featuring a robust .NET backend and a modern React frontend that provides a dynamic, interactive API documentation and testing experience, replacing traditional Swagger UI. The project demonstrates advanced integration, code quality, and user experience best practices.
