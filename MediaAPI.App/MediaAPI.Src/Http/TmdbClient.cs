@@ -5,7 +5,7 @@ namespace MediaAPI.Http;
 
 public interface ITmdbClient
 {
-    Task<HttpResponseMessage> GetPosterPathAsync(string imdb_id, CancellationToken cancellationToken = default);
+    Task<HttpResponseMessage> GetDetailsAsync(string imdb_id, CancellationToken cancellationToken = default);
 }
     
 public class TmdbClient : ITmdbClient
@@ -19,7 +19,7 @@ public class TmdbClient : ITmdbClient
         _options = options.Value;
     }
 
-    public async Task<HttpResponseMessage> GetPosterPathAsync(string imdb_id, CancellationToken cancellationToken = default)
+    public async Task<HttpResponseMessage> GetDetailsAsync(string imdb_id, CancellationToken cancellationToken = default)
     {
         var requestUrl = $"find/{imdb_id}?api_key={_options.ApiKey}&external_source=imdb_id";
         return await _httpClient.GetAsync(requestUrl, cancellationToken);

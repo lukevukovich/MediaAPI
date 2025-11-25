@@ -5,7 +5,7 @@ namespace MediaAPI.Models.Tmdb;
 public class TmdbResponse
 {
     [JsonPropertyName("movie_results")]
-    public List<TmdbPoster> MovieResults { get; set; } = [];
+    public List<TmdbMovieDetails> MovieResults { get; set; } = [];
     [JsonPropertyName("tv_results")]
-    public List<TmdbPoster> TvResults { get; set; } = [];
+    public List<TmdbTvDetails> TvResults { get; set; } = [];
 }

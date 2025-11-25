@@ -34,6 +34,23 @@ public class MediaController : ControllerBase
     }
 
     /// <summary>
+    /// Obtain TMDB details for a given IMDB ID.
+    /// </summary>
+    /// <param name="imdb_id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("details/{imdb_id}")]
+    public async Task<IActionResult> GetTmdbDetailsAsync(string imdb_id, CancellationToken cancellationToken = default)
+    {
+        var result = await _tmdbService.ProxyDetailsAsync(imdb_id, cancellationToken);
+        if (!result.Success)
+        {
+            return Problem(result.ErrorMessage, statusCode: result.StatusCode);
+        }
+        return Ok(result.Value);
+    }
+
+    /// <summary>
     /// Obtain a TMDB poster URL for a given IMDB ID.
     /// </summary>
     /// <param name="imdb_id">The IMDB ID of the media item</param>
