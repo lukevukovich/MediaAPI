@@ -21,12 +21,13 @@ h1 {
   margin-left: 4px;
   margin-bottom: 2px;
   letter-spacing: 3px;
+  transition: transform 0.2s ease-in-out;
 }
 
 h1:hover {
   color: rgb(200, 200, 200);
   cursor: pointer;
-  transform: scale(102%);
+  transform: scale(103%);
 }
 
 button {
