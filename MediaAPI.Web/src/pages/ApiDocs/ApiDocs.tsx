@@ -141,14 +141,23 @@ export default function ApiDocs() {
   }
 
   useEffect(() => {
+    let resizeTimeout: number | undefined;
     function handleResize() {
-      Object.keys(expandEndpointRefs.current).forEach((endpoint) => {
-        resizeEndpoint(endpoint);
-      });
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+      resizeTimeout = window.setTimeout(() => {
+        Object.keys(expandEndpointRefs.current).forEach((endpoint) => {
+          resizeEndpoint(endpoint);
+        });
+      }, 100);
     }
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
     };
   }, []);
 

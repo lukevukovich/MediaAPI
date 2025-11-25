@@ -39,6 +39,7 @@
   color: white;
   padding: 6px 10px;
   cursor: pointer;
+  margin-left: 8px;
 }
 
 .expand-button:hover {
@@ -120,7 +121,7 @@
   flex-direction: row;
   gap: 8px;
   align-items: center;
-  margin-top: 6px;
+  margin-top: 6px;;
 }
 
 input {
@@ -131,7 +132,9 @@ input {
   color: white;
   padding: 5px 5px;
   font-size: 16px;
-  width: 155px;
+  max-width: 200px;
+  min-width: 70px;
+  width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
