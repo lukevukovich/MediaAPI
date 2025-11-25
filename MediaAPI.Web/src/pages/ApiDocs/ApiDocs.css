@@ -181,4 +181,5 @@ input {
   color: rgb(131, 131, 131);
   font-weight: 100;
   margin-bottom: 2px;
+  word-break: break-all;
 }
