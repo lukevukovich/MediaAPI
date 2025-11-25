@@ -4,7 +4,7 @@ import { getApiMetadata, type ApiMetadata } from "../../utils/ApiMetadata";
 import "./ApiDocs.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faTag, faTimes } from "@fortawesome/free-solid-svg-icons";
-import Settings from "../../utils/Settings";
+import Settings from "../../Settings";
 
 export default function ApiDocs() {
   const settings = new Settings();

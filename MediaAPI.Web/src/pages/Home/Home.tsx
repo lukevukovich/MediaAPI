@@ -2,7 +2,7 @@ import Header from "../../assets/Header/Header";
 import "./Home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin, faGithub } from "@fortawesome/free-brands-svg-icons";
-import Settings from "../../utils/Settings";
+import Settings from "../../Settings";
 
 export default function Home() {
   const settings = new Settings();
@@ -38,11 +38,7 @@ export default function Home() {
         >
           <FontAwesomeIcon icon={faLinkedin} className="icon" />
         </a>
-        <a
-          href={settings.githubUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={settings.githubUrl} target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faGithub} className="icon" />
         </a>
       </h2>
