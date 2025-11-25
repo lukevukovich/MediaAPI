@@ -4,7 +4,7 @@ import { getApiMetadata, type ApiMetadata } from "../../utils/ApiMetadata";
 import "./ApiDocs.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faTag, faTimes } from "@fortawesome/free-solid-svg-icons";
-import Settings from "../../utils/Settings";
+import Settings from "../../Settings";
 
 export default function ApiDocs() {
   const settings = new Settings();
@@ -141,14 +141,23 @@ export default function ApiDocs() {
   }
 
   useEffect(() => {
+    let resizeTimeout: number | undefined;
     function handleResize() {
-      Object.keys(expandEndpointRefs.current).forEach((endpoint) => {
-        resizeEndpoint(endpoint);
-      });
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+      resizeTimeout = window.setTimeout(() => {
+        Object.keys(expandEndpointRefs.current).forEach((endpoint) => {
+          resizeEndpoint(endpoint);
+        });
+      }, 100);
     }
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
     };
   }, []);
 
