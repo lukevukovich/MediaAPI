@@ -57,8 +57,8 @@ public class StremioControllerTests : IClassFixture<WebApplicationFactory<Progra
         var manifest = JsonSerializer.Deserialize<Manifest>(content, options);
 
         Assert.NotNull(manifest);
-        Assert.Equal("stremio.luke.catalog", manifest.Id);
-        Assert.Equal("Luke's Catalogs", manifest.Name);
+        Assert.Equal("stremio.mediaapi.catalog", manifest.Id);
+        Assert.Equal("media-api Catalogs", manifest.Name);
     }
 
     [Fact]

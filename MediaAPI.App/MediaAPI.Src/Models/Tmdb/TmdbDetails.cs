@@ -6,7 +6,7 @@ namespace MediaAPI.Models.Tmdb;
 public interface ITmdbDetails
 {
     [JsonPropertyName("id")]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("poster_path")]
     public string? PosterPath { get; set; }
@@ -15,7 +15,7 @@ public interface ITmdbDetails
 public class TmdbMovieDetails : ITmdbDetails
 {
     [JsonPropertyName("id")]
-    public required string Id { get; set; }
+    public required int Id { get; set; }
 
     [JsonPropertyName("adult")]
     public bool Adult { get; set; }
@@ -63,7 +63,7 @@ public class TmdbMovieDetails : ITmdbDetails
 public class TmdbTvDetails : ITmdbDetails
 {
     [JsonPropertyName("id")]
-    public required string Id { get; set; }
+    public required int Id { get; set; }
 
     [JsonPropertyName("adult")]
     public bool Adult { get; set; }

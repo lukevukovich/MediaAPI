@@ -19,7 +19,7 @@ public class TmdbServiceTests
     {
         var fakeMovieDetails = new TmdbMovieDetails
         {
-            Id = "tt1234567",
+            Id = 123,
             Adult = false,
             BackdropPath = "/backdrop.jpg",
             Title = "Fake Movie",
@@ -38,7 +38,7 @@ public class TmdbServiceTests
 
         var fakeTvDetails = new TmdbTvDetails
         {
-            Id = "tt7654321",
+            Id = 456,
             Adult = false,
             BackdropPath = "/tvbackdrop.jpg",
             Name = "Fake TV Show",
@@ -76,12 +76,12 @@ public class TmdbServiceTests
     private HttpResponseMessage _getFakePosterResponseMessage(FakeMediaType media_type)
     {
         var fakeMoviePoster = new TmdbMovieDetails {
-            Id = "tt1234567",
+            Id = 123,
             PosterPath = "/path/to/poster.jpg"
         };
         var fakeTvPoster = new TmdbTvDetails
         {
-            Id = "tt7654321",
+            Id = 456,
             PosterPath = "/path/to/tvposter.jpg"
         };
 
@@ -110,7 +110,7 @@ public class TmdbServiceTests
         var (tmdbClient, tmdbOptions) = TmdbClientTests.CreateClient(fakeResponse);
         var tmdbService = new TmdbService(tmdbClient, tmdbOptions.Object);
 
-        var result = await tmdbService.ProxyDetailsAsync("tt1234567");
+        var result = await tmdbService.ProxyDetailsAsync("tt1234567", "imdb_id");
         var details = result.Value;
 
         Assert.True(result.Success);
@@ -118,7 +118,7 @@ public class TmdbServiceTests
         Assert.NotNull(details);
         Assert.IsType<TmdbMovieDetails>(details);
         var movieDetails = details as TmdbMovieDetails;
-        Assert.Equal("tt1234567", movieDetails!.Id);
+        Assert.Equal(123, movieDetails!.Id);
         Assert.Equal("Fake Movie", movieDetails.Title);
     }
 
@@ -129,7 +129,7 @@ public class TmdbServiceTests
         var (tmdbClient, tmdbOptions) = TmdbClientTests.CreateClient(fakeResponse);
         var tmdbService = new TmdbService(tmdbClient, tmdbOptions.Object);
 
-        var result = await tmdbService.ProxyDetailsAsync("tt7654321");
+        var result = await tmdbService.ProxyDetailsAsync("tt7654321", "imdb_id");
         var details = result.Value;
 
         Assert.True(result.Success);
@@ -137,7 +137,7 @@ public class TmdbServiceTests
         Assert.NotNull(details);
         Assert.IsType<TmdbTvDetails>(details);
         var tvDetails = details as TmdbTvDetails;
-        Assert.Equal("tt7654321", tvDetails!.Id);
+        Assert.Equal(456, tvDetails!.Id);
         Assert.Equal("Fake TV Show", tvDetails.Name);
     }
 
@@ -152,7 +152,7 @@ public class TmdbServiceTests
         var (tmdbClient, tmdbOptions) = TmdbClientTests.CreateClient(fakeResponse);
         var tmdbService = new TmdbService(tmdbClient, tmdbOptions.Object);
 
-        var result = await tmdbService.ProxyDetailsAsync("tt0000000");
+        var result = await tmdbService.ProxyDetailsAsync("tt0000000", "imdb_id");
 
         Assert.False(result.Success);
         Assert.Null(result.Value);
@@ -172,7 +172,7 @@ public class TmdbServiceTests
         var (tmdbClient, tmdbOptions) = TmdbClientTests.CreateClient(fakeResponse);
         var tmdbService = new TmdbService(tmdbClient, tmdbOptions.Object);
 
-        var result = await tmdbService.ProxyDetailsAsync("tt1234567");
+        var result = await tmdbService.ProxyDetailsAsync("tt1234567", "imdb_id");
 
         Assert.False(result.Success);
         Assert.Null(result.Value);
@@ -187,12 +187,12 @@ public class TmdbServiceTests
         var (tmdbClient, tmdbOptions) = TmdbClientTests.CreateClient(fakeResponse);
         var tmdbService = new TmdbService(tmdbClient, tmdbOptions.Object);
 
-        var result = await tmdbService.ProxyDetailsAsync("tt8888888");
+        var result = await tmdbService.ProxyDetailsAsync("tt8888888", "imdb_id");
 
         Assert.False(result.Success);
         Assert.Null(result.Value);
         Assert.Equal(404, result.StatusCode);
-        Assert.Equal("No TMDB details found for IMDB ID tt8888888", result.ErrorMessage);
+        Assert.Equal("No TMDB details found for imdb_id tt8888888", result.ErrorMessage);
     }
 
     [Fact]
@@ -202,12 +202,12 @@ public class TmdbServiceTests
         var (tmdbClient, tmdbOptions) = TmdbClientTests.CreateClient(fakeResponse);
         var tmdbService = new TmdbService(tmdbClient, tmdbOptions.Object);
 
-        var result = await tmdbService.ProxyDetailsAsync("tt9999999");
+        var result = await tmdbService.ProxyDetailsAsync("tt9999999", "imdb_id");
 
         Assert.False(result.Success);
         Assert.Null(result.Value);
         Assert.Equal(404, result.StatusCode);
-        Assert.Equal("No TMDB details found for IMDB ID tt9999999", result.ErrorMessage);
+        Assert.Equal("No TMDB details found for imdb_id tt9999999", result.ErrorMessage);
     }
 
     [Fact]

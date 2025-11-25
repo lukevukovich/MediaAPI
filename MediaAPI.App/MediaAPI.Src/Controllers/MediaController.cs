@@ -36,13 +36,24 @@ public class MediaController : ControllerBase
     /// <summary>
     /// Obtain TMDB details for a given IMDB ID.
     /// </summary>
-    /// <param name="imdb_id"></param>
+    /// <param name="id">The ID of the media item</param>
+    /// <param name="external_source">
+    /// The external source of the media item. Supported values are:
+    /// - imdb_id
+    /// - facebook_id
+    /// - instagram_id
+    /// - tvdb_id
+    /// - tiktok_id
+    /// - twitter_id
+    /// - wikidata_id
+    /// - youtube_id
+    /// </param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("details/{imdb_id}")]
-    public async Task<IActionResult> GetTmdbDetailsAsync(string imdb_id, CancellationToken cancellationToken = default)
+    [HttpGet("details/{id}/{external_source}")]
+    public async Task<IActionResult> GetTmdbDetailsAsync(string id, string external_source,CancellationToken cancellationToken = default)
     {
-        var result = await _tmdbService.ProxyDetailsAsync(imdb_id, cancellationToken);
+        var result = await _tmdbService.ProxyDetailsAsync(id, external_source, cancellationToken);
         if (!result.Success)
         {
             return Problem(result.ErrorMessage, statusCode: result.StatusCode);

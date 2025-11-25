@@ -43,7 +43,7 @@ public class TmdbClientTests
         };
 
         var (tmdbClient, _) = CreateClient(fakeResponse);
-        var response = await tmdbClient.GetDetailsAsync("imdb_id");
+        var response = await tmdbClient.GetDetailsAsync("1234", "imdb_id");
 
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
@@ -59,7 +59,7 @@ public class TmdbClientTests
         };
 
         var (tmdbClient, _) = CreateClient(fakeResponse);
-        var response = await tmdbClient.GetDetailsAsync("imdb_id");
+        var response = await tmdbClient.GetDetailsAsync("1234", "imdb_id");
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
         Assert.Equal("{\"status\":\"error\",\"message\":\"Not Found\"}", content);

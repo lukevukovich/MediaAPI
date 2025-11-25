@@ -9,7 +9,7 @@ namespace MediaAPI.Services;
 
 public interface ITmdbService
 {
-    Task<ProxyResult<ITmdbDetails>> ProxyDetailsAsync(string imdb_id, CancellationToken cancellationToken = default);
+    Task<ProxyResult<ITmdbDetails>> ProxyDetailsAsync(string id, string external_source, CancellationToken cancellationToken = default);
     Task<ProxyResult<TmdbPoster>> ProxyPosterPathAsync(string imdb_id, CancellationToken cancellationToken = default);
 }
 
@@ -24,9 +24,9 @@ public class TmdbService : ITmdbService
         _options = options.Value;
     }
 
-    public async Task<ProxyResult<ITmdbDetails>> ProxyDetailsAsync(string imdb_id, CancellationToken cancellationToken = default)
+    public async Task<ProxyResult<ITmdbDetails>> ProxyDetailsAsync(string id, string external_source, CancellationToken cancellationToken = default)
     {
-        var response = await _client.GetDetailsAsync(imdb_id, cancellationToken);
+        var response = await _client.GetDetailsAsync(id, external_source, cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
             var error = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -82,7 +82,7 @@ public class TmdbService : ITmdbService
             return new ProxyResult<ITmdbDetails>
             {
                 Success = false,
-                ErrorMessage = $"No TMDB details found for IMDB ID {imdb_id}",
+                ErrorMessage = $"No TMDB details found for {external_source} {id}",
                 StatusCode = 404
             };
         }
@@ -90,7 +90,7 @@ public class TmdbService : ITmdbService
 
     public async Task<ProxyResult<TmdbPoster>> ProxyPosterPathAsync(string imdb_id, CancellationToken cancellationToken = default)
     {
-        var response = await _client.GetDetailsAsync(imdb_id, cancellationToken);
+        var response = await _client.GetDetailsAsync(imdb_id, "imdb_id", cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
             var error = await response.Content.ReadAsStringAsync(cancellationToken);

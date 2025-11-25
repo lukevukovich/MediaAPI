@@ -14,6 +14,8 @@ public class MediaControllerTests : IClassFixture<WebApplicationFactory<Program>
 {
     private readonly HttpClient _client;
     private MdbList? _mdbList;
+    private TmdbMovieDetails? _tmdbMovieDetails;
+    private TmdbTvDetails? _tmdbTvDetails;
     private TmdbPoster? _tmdbPoster;
     private Mock<IMdbListService> _mdbListServiceMock = new();
     private Mock<ITmdbService> _tmdbServiceMock = new();
@@ -32,6 +34,18 @@ public class MediaControllerTests : IClassFixture<WebApplicationFactory<Program>
                 }
         };
 
+        _tmdbMovieDetails = new TmdbMovieDetails
+        {
+            Id = 123,
+            Title = "Test Movie"
+        };
+
+        _tmdbTvDetails = new TmdbTvDetails
+        {
+            Id = 456,
+            Name = "Test TV Show"
+        };
+
         _tmdbPoster = new TmdbPoster
         {
             ImdbId = "tt1234567",
@@ -43,6 +57,20 @@ public class MediaControllerTests : IClassFixture<WebApplicationFactory<Program>
             {
                 Success = true,
                 Value = _mdbList
+            });
+
+        _tmdbServiceMock.Setup(s => s.ProxyDetailsAsync(It.Is<string>(id => id == "tt1234567"), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ProxyResult<ITmdbDetails>
+            {
+                Success = true,
+                Value = _tmdbMovieDetails
+            });
+
+        _tmdbServiceMock.Setup(s => s.ProxyDetailsAsync(It.Is<string>(id => id == "tt7654321"), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ProxyResult<ITmdbDetails>
+            {
+                Success = true,
+                Value = _tmdbTvDetails
             });
 
         _tmdbServiceMock.Setup(s => s.ProxyPosterPathAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -90,6 +118,66 @@ public class MediaControllerTests : IClassFixture<WebApplicationFactory<Program>
 
         var response = await _client.GetAsync("/media/list/invalidowner/invalidlist");
         Assert.Equal(404, (int)response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetMovieDetails_ReturnsMovieDetails()
+    {
+        var response = await _client.GetAsync("/media/details/tt1234567/imdb_id");
+        response.EnsureSuccessStatusCode();
+
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var content = await response.Content.ReadAsStringAsync();
+        var tmdbDetails = JsonSerializer.Deserialize<TmdbMovieDetails>(content, options);
+        Assert.NotNull(tmdbDetails);
+        tmdbDetails.Should().BeEquivalentTo(_tmdbMovieDetails);
+    }
+
+    [Fact]
+    public async Task GetMovieDetails_ReturnsProblem()
+    {
+        _tmdbServiceMock.Setup(s => s.ProxyDetailsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ProxyResult<ITmdbDetails>
+            {
+                Success = false,
+                ErrorMessage = "Not Found",
+                StatusCode = 404
+            });
+
+        var response = await _client.GetAsync("/media/details/invalidid/imdb_id");
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.Equal(404, (int)response.StatusCode);
+        Assert.Contains("Not Found", content);
+    }
+
+    [Fact]
+    public async Task GetTvDetails_ReturnsTvDetails()
+    {
+        var response = await _client.GetAsync("/media/details/tt7654321/imdb_id");
+        response.EnsureSuccessStatusCode();
+
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var content = await response.Content.ReadAsStringAsync();
+        var tmdbDetails = JsonSerializer.Deserialize<TmdbTvDetails>(content, options);
+        Assert.NotNull(tmdbDetails);
+        tmdbDetails.Should().BeEquivalentTo(_tmdbTvDetails);
+    }
+
+    [Fact]
+    public async Task GetTvDetails_ReturnsProblem()
+    {
+        _tmdbServiceMock.Setup(s => s.ProxyDetailsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ProxyResult<ITmdbDetails>
+            {
+                Success = false,
+                ErrorMessage = "Not Found",
+                StatusCode = 404
+            });
+
+        var response = await _client.GetAsync("/media/details/invalidid/imdb_id");
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.Equal(404, (int)response.StatusCode);
+        Assert.Contains("Not Found", content);
     }
 
     [Fact]

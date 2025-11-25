@@ -17,44 +17,44 @@ public class StremioController : ControllerBase
     }
 
     /// <summary>
-    /// Get the Stremio add-on manifest for Luke's Catalogs.
+    /// Get the Stremio add-on manifest for media-api Catalogs.
     /// </summary>
     [HttpGet("manifest.json")]
     public ActionResult<Manifest> GetManifest()
     {
         var manifest = new Manifest
         {
-            Id = "stremio.luke.catalog",
+            Id = "stremio.mediaapi.catalog",
             Version = "1.0.3",
-            Name = "Luke's Catalogs",
-            Description = "A collection of Luke's favorite catalogs.",
+            Name = "media-api Catalogs",
+            Description = "A collection of media-api catalogs. See https://media-api.dev for more information.",
             Logo = "https://api.media-api.dev/images/logo.png",
             Types = ["movie", "series"],
             Resources = ["catalog"],
             IdPrefixes = ["tt"],
             Catalogs = [
-                new Catalog { Type = "movie", Id = "slasher", Name = "Luke's Slasher Films", Extra = [
+                new Catalog { Type = "movie", Id = "slasher", Name = "media-api Slasher Films", Extra = [
                     new Extra {
                         Name = "genre",
                         Options = ["Halloween", "Friday the 13th", "A Nightmare on Elm Street", "Texas Chainsaw Massacre", "Scream", "Child's Play", "Terrifier", "Hatchet", "Black Christmas", "Jeepers Creepers", "The Strangers", "Miscellaneous"],
                         IsRequired = true
                     }
                 ]},
-                new Catalog { Type = "movie", Id = "horror", Name = "Luke's Horror Movies", Extra = [
+                new Catalog { Type = "movie", Id = "horror", Name = "media-api Horror Movies", Extra = [
                     new Extra {
                         Name = "genre",
                         Options = ["The Conjuring Universe", "Insidious", "Paranormal Activity", "The Exorcist", "Pet Sematary", "The Evil Dead", "The Grudge", "Alien", "Miscellaneous"],
                         IsRequired = true
                     }
                 ]},
-                new Catalog { Type = "movie", Id = "marvel", Name = "Luke's Marvel Movies" , Extra = [
+                new Catalog { Type = "movie", Id = "marvel", Name = "media-api Marvel Movies" , Extra = [
                     new Extra {
                         Name = "genre",
                         Options = ["Iron Man", "Captain America", "Thor", "The Avengers", "Spider-Man", "Guardians of the Galaxy", "Hulk", "X-Men", "Deadpool", "Doctor Strange", "Black Panther", "Ant-Man", "Miscellaneous"],
                         IsRequired = true
                     }
                 ]},
-                new Catalog { Type = "movie", Id = "gangster", Name = "Luke's Gangster Movies" }
+                new Catalog { Type = "movie", Id = "gangster", Name = "media-api Gangster Movies" }
             ]
         };
 
