@@ -12,8 +12,9 @@
   border-radius: 10px;
   white-space: nowrap;
   width: fit-content;
-  transition: transform 0.2s ease-in-out;
   transform-origin: left center;
+  transition: width 0.2s ease-in-out;
+  height: 40px;
 }
 
 h1 {
@@ -22,6 +23,12 @@ h1 {
   margin-bottom: 2px;
   letter-spacing: 3px;
   transition: transform 0.2s ease-in-out;
+}
+
+.small-home-button {
+  font-size: 32px !important;
+  margin-top: 2px;
+  display: none;
 }
 
 h1:hover {
@@ -52,8 +59,10 @@ button:active {
 }
 
 @media (max-width: 470px) {
-  .header {
-    transform: scale(80%);
-    margin-bottom: -6px;
+  h1 {
+    display: none;
+  }
+  .small-home-button {
+    display: flex;
   }
 }

@@ -13,13 +13,13 @@ input {
 }
 
 h2 {
-  font-size: 18px;
+  font-size: 20px;
   color: white;
   display: flex;
   background-color: rgb(31, 31, 31);
-  padding: 15px;
+  padding: 13px;
   margin: 15px;
-  margin-left: 43px;
+  margin-left: 42px;
   border-radius: 10px;
   max-width: 920px;
   letter-spacing: 1px;
@@ -36,6 +36,20 @@ h3 {
   border-radius: 10px;
   max-width: 888px;
   letter-spacing: 1px;
+}
+
+.tag {
+  width: fit-content;
+  min-width: auto;
+}
+
+.tag-icon {
+  margin-left: 6px;
+  margin-top: 2px;
+}
+
+.panel-icon {
+  margin-left: 6px;
 }
 
 p {
