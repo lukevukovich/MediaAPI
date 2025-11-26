@@ -3,8 +3,10 @@ import Header from "../../assets/Header/Header";
 import { getApiMetadata, type ApiMetadata } from "../../utils/ApiMetadata";
 import "./ApiDocs.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faTag, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTag, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Settings from "../../Settings";
+import ExpandPanel from "../../assets/ExpandPanel/ExpandPanel";
+import "../../assets/ExpandPanel/ExpandPanel.css";
 
 export default function ApiDocs() {
   const settings = new Settings();
@@ -17,12 +19,6 @@ export default function ApiDocs() {
     [endpoint: string]: string | null;
   }>({});
 
-  const expandEndpointRefs = useRef<{
-    [endpoint: string]: HTMLDivElement | null;
-  }>({});
-  const expandIconRefs = useRef<{
-    [endpoint: string]: SVGSVGElement | null;
-  }>({});
   const paramValueRefs = useRef<{
     [endpoint: string]: {
       [paramName: string]: HTMLInputElement | null;
@@ -59,34 +55,6 @@ export default function ApiDocs() {
   useEffect(() => {
     fetchApiMetadata();
   }, []);
-
-  function rotateExpandIcon(endpoint: string) {
-    const iconRef = expandIconRefs.current[endpoint];
-    if (iconRef) {
-      iconRef.classList.toggle("expanded");
-    }
-  }
-
-  function expandEndpoint(endpoint: string) {
-    const ref = expandEndpointRefs.current[endpoint];
-    if (ref) {
-      if (ref.classList.contains("expanded")) {
-        ref.style.maxHeight = "0px";
-        ref.classList.remove("expanded");
-      } else {
-        ref.style.maxHeight = ref.scrollHeight + "px";
-        ref.classList.add("expanded");
-      }
-    }
-    rotateExpandIcon(endpoint);
-  }
-
-  function resizeEndpoint(endpoint: string) {
-    const ref = expandEndpointRefs.current[endpoint];
-    if (ref && ref.classList.contains("expanded")) {
-      ref.style.maxHeight = ref.scrollHeight + "px";
-    }
-  }
 
   function updateEndpointState(endpoint: string) {
     let ep = settings.mediaApiUrl + endpoint.substring(1);
@@ -140,27 +108,6 @@ export default function ApiDocs() {
     }
   }
 
-  useEffect(() => {
-    let resizeTimeout: number | undefined;
-    function handleResize() {
-      if (resizeTimeout) {
-        clearTimeout(resizeTimeout);
-      }
-      resizeTimeout = window.setTimeout(() => {
-        Object.keys(expandEndpointRefs.current).forEach((endpoint) => {
-          resizeEndpoint(endpoint);
-        });
-      }, 100);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      if (resizeTimeout) {
-        clearTimeout(resizeTimeout);
-      }
-    };
-  }, []);
-
   return (
     <div className="docs-page">
       <Header />
@@ -174,23 +121,23 @@ export default function ApiDocs() {
             {endpoints
               .filter((endpoint) => endpoint.startsWith(`/${tag}/`))
               .map((endpoint) => (
-                <h3 className="api-endpoint" key={endpoint}>
-                  <div className="api-endpoint-left">
-                    <div className="api-url">
-                      <p className="api-method">
-                        {Object.keys(apiMetadata?.paths?.[endpoint] || {})}
+                <ExpandPanel
+                  key={endpoint}
+                  titleChildren={
+                    <div>
+                      <div className="api-url">
+                        <p className="api-method">
+                          {Object.keys(apiMetadata?.paths?.[endpoint] || {})}
+                        </p>
+                        <p>{endpoint}</p>
+                      </div>
+                      <p className="api-summary">
+                        {apiMetadata?.paths?.[endpoint]?.get?.summary || ""}
                       </p>
-                      <p>{endpoint}</p>
                     </div>
-                    <p className="api-summary">
-                      {apiMetadata?.paths?.[endpoint]?.get?.summary || ""}
-                    </p>
-                    <div
-                      className="api-parameters"
-                      ref={(el) => {
-                        expandEndpointRefs.current[endpoint] = el;
-                      }}
-                    >
+                  }
+                  expandChildren={
+                    <div className="api-parameters">
                       {apiMetadata?.paths?.[endpoint]?.get?.parameters?.map(
                         (param) => (
                           <div key={param.name} className="api-parameter">
@@ -252,22 +199,8 @@ export default function ApiDocs() {
                         </p>
                       </div>
                     </div>
-                  </div>
-                  <div className="api-endpoint-right">
-                    <button
-                      className="expand-button"
-                      onClick={() => expandEndpoint(endpoint)}
-                    >
-                      <FontAwesomeIcon
-                        className="expand-icon"
-                        icon={faAngleDown}
-                        ref={(el) => {
-                          expandIconRefs.current[endpoint] = el;
-                        }}
-                      />
-                    </button>
-                  </div>
-                </h3>
+                  }
+                ></ExpandPanel>
               ))}
           </div>
         ))}
