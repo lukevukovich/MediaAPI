@@ -3,7 +3,11 @@ import Header from "../../assets/Header/Header";
 import { getApiMetadata, type ApiMetadata } from "../../utils/ApiMetadata";
 import "./ApiDocs.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTag, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleExclamation,
+  faTag,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 import Settings from "../../Settings";
 import ExpandPanel from "../../assets/ExpandPanel/ExpandPanel";
 
@@ -24,12 +28,15 @@ export default function ApiDocs() {
     };
   }>({});
 
+  const [tagIcon, setTagIcon] = useState(faTag);
+
   async function fetchApiMetadata() {
     let metadata: ApiMetadata;
     try {
       metadata = await getApiMetadata();
     } catch (e) {
       setTags(["Error fetching API metadata"]);
+      setTagIcon(faCircleExclamation);
       return;
     }
     setApiMetadata(metadata);
@@ -115,7 +122,7 @@ export default function ApiDocs() {
           <div className="api-section" key={tag}>
             <h2 className="tag">
               {tag}
-              <FontAwesomeIcon icon={faTag} className="tag-icon" />
+              <FontAwesomeIcon icon={tagIcon} className="tag-icon" />
             </h2>
             {endpoints
               .filter((endpoint) => endpoint.startsWith(`/${tag}/`))
