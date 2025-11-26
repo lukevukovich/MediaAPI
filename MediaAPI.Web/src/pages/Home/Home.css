@@ -5,7 +5,7 @@
 .note {
   min-width: auto;
   width: fit-content;
-  font-weight: bold;
+  font-weight: bold !important;
 }
 
 .icon {
