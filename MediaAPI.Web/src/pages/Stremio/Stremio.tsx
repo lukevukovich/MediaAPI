@@ -1,25 +1,104 @@
 import Header from "../../assets/Header/Header";
 import "./Stremio.css";
 import ExpandPanel from "../../assets/ExpandPanel/ExpandPanel";
-// import { useEffect, useState } from "react";
-// import { getApiMetadata, type ApiMetadata } from "../../utils/ApiMetadata";
+import { useEffect, useState } from "react";
+import {
+  getApiMetadata,
+  type ApiMetadata,
+  type CatalogMetadata,
+} from "../../utils/ApiMetadata";
 import Settings from "../../Settings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCheck,
+  faCircleExclamation,
   faCircleInfo,
   faCloudDownload,
   faFilm,
   faPuzzlePiece,
+  faSpinner,
+  faTimes,
+  type IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Stremio() {
   const settings = new Settings();
 
-  // const [apiMetadata, setApiMetadata] = useState<ApiMetadata | null>(null);
+  const [endpoints, setEndpoints] = useState<string[]>([]);
+  const [catalogs, setCatalogs] = useState<string[]>([]);
+  const [catalogMetadata, setCatalogMetadata] = useState<{
+    [catalog: string]: CatalogMetadata | null;
+  }>({});
 
-  // useEffect(() => {
-  //   getApiMetadata().then(setApiMetadata);
-  // }, []);
+  const [catalogTagText, setCatalogTagText] = useState("Catalogs");
+  const [catalogTagIcon, setCatalogTagIcon] = useState(faFilm);
+
+  const [catalogIconState, setCatalogIconState] = useState<{
+    [catalog: string]: IconDefinition;
+  }>({});
+
+  async function fetchApiMetadata() {
+    let data: ApiMetadata;
+    try {
+      data = await getApiMetadata();
+    } catch (error) {
+      setCatalogTagText("Error fetching API metadata");
+      setCatalogTagIcon(faCircleExclamation);
+      return;
+    }
+    const endpoints = Object.keys(data.paths).filter((path) =>
+      path.toLowerCase().startsWith("/stremio/catalog/")
+    );
+    setEndpoints(endpoints);
+    const cats = endpoints.map((path) => path.split("/")[4].split(".")[0]);
+    setCatalogs(cats);
+  }
+
+  async function fetchCatalogImages() {
+    const initialIcons: { [catalog: string]: IconDefinition } = {};
+    endpoints.forEach((endpoint) => {
+      const catalog = endpoint.split("/")[4]?.split(".")[0];
+      initialIcons[catalog] = faSpinner;
+    });
+    setCatalogIconState(initialIcons);
+
+    const tasks = endpoints.map(async (endpoint) => {
+      let requestUrl = settings.mediaApiUrl + endpoint.substring(1);
+      if (endpoint.includes("{") && endpoint.includes("}"))
+        requestUrl = requestUrl.replace(/{[^}]+}/g, "all");
+      const catalog = endpoint.split("/")[4]?.split(".")[0];
+      try {
+        const response = await fetch(requestUrl);
+        const data: CatalogMetadata | null = await response.json();
+        setCatalogIconState((prev) => ({
+          ...prev,
+          [catalog]:
+            data && data.metas && data.metas.length > 0 ? faCheck : faTimes,
+        }));
+        setCatalogMetadata((prev) => ({ ...prev, [catalog]: data }));
+      } catch (error) {
+        setCatalogIconState((prev) => ({
+          ...prev,
+          [catalog]: faTimes,
+        }));
+        setCatalogMetadata((prev) => ({ ...prev, [catalog]: null }));
+      }
+    });
+    await Promise.all(tasks);
+  }
+
+  useEffect(() => {
+    fetchApiMetadata();
+  }, []);
+
+  useEffect(() => {
+    fetchCatalogImages();
+  }, [endpoints]);
+
+  function visitImdbPage(imdbId: string) {
+    const imdbUrl = `https://www.imdb.com/title/${imdbId}/`;
+    window.open(imdbUrl, "_blank");
+  }
 
   return (
     <div className="stremio-page">
@@ -88,9 +167,46 @@ export default function Stremio() {
       </div>
       <div className="stremio-section">
         <h2 className="stremio-tag">
-          Catalogs
-          <FontAwesomeIcon className="tag-icon" icon={faFilm}></FontAwesomeIcon>
+          {catalogTagText}
+          <FontAwesomeIcon
+            className="tag-icon"
+            icon={catalogTagIcon}
+          ></FontAwesomeIcon>
         </h2>
+        {catalogs.map((catalog) => (
+          <ExpandPanel
+            key={catalog}
+            titleChildren={
+              <div className="stremio-panel-title">
+                {catalog.charAt(0).toUpperCase() + catalog.slice(1)}
+                <FontAwesomeIcon
+                  className={`panel-icon loading-icon${
+                    (catalogIconState[catalog] || faSpinner) === faSpinner
+                      ? " loading"
+                      : ""
+                  }`}
+                  icon={catalogIconState[catalog] || faSpinner}
+                />
+              </div>
+            }
+            expandChildren={
+              catalogMetadata[catalog] ? (
+                <div className="stremio-catalog-images">
+                  {catalogMetadata[catalog]?.metas?.map((meta) =>
+                    meta.poster ? (
+                      <img
+                        key={meta.id}
+                        src={meta.poster}
+                        alt={meta.name}
+                        onClick={() => visitImdbPage(meta.id)}
+                      />
+                    ) : null
+                  )}
+                </div>
+              ) : null
+            }
+          />
+        ))}
       </div>
     </div>
   );

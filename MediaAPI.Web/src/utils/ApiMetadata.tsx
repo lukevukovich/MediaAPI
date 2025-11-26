@@ -55,6 +55,14 @@ export interface ApiMetadata {
   };
 }
 
+export interface CatalogMetadata {
+  metas: Array<{
+    id: string;
+    name: string;
+    poster: string;
+  }>;
+}
+
 export async function getApiMetadata() {
   const settings = new Settings();
   const response = await fetch(settings.swaggerUrl);

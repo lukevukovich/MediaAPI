@@ -1,50 +1,92 @@
 .stremio-section {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .stremio-tag {
-    width: fit-content;
-    min-width: auto;
+  width: fit-content;
+  min-width: auto;
 }
 
 .stremio-tag-icon {
-    margin-left: 6px;
-    margin-top: 2px;
+  margin-left: 6px;
+  margin-top: 2px;
 }
 
 .stremio-panel-title {
-    font-size: 20px;
-    margin-top: 2px;
+  font-size: 20px;
+  margin-top: 2px;
 }
 
 .stremio-panel-content {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-weight: normal;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-weight: normal;
 }
 
 .stremio-panel-content p {
-    color: rgb(230, 230, 230);
+  color: rgb(230, 230, 230);
 }
 
 .stremio-manifest-url-container {
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
-    align-items: start;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: start;
 }
 
 .stremio-manifest-url-label {
-    font-weight: bold;
-    white-space: nowrap;
-    word-break: normal;
-    overflow-wrap: normal;
-    color: white !important;
+  font-weight: bold;
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
+  color: white !important;
 }
 
 .stremio-manifest-url {
-    color: rgb(44, 192, 101) !important;
-    word-break: break-all;
+  color: rgb(44, 192, 101) !important;
+  word-break: break-all;
+}
+
+.stremio-catalog-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  column-gap: 10px;
+  row-gap: 14px;
+  margin-top: 15px;
+  margin-left: 6px;
+}
+
+.stremio-catalog-images img {
+  width: 110px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.stremio-catalog-images img:hover {
+  transform: scale(1.1);
+}
+
+.loading-icon {
+  animation: none;
+}
+
+.loading-icon.loading {
+  font-size: 18px;
+  margin-left: 6px;
+  margin-top: 2px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
