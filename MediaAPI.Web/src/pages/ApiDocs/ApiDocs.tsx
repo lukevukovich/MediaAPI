@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTag, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Settings from "../../Settings";
 import ExpandPanel from "../../assets/ExpandPanel/ExpandPanel";
-import "../../assets/ExpandPanel/ExpandPanel.css";
 
 export default function ApiDocs() {
   const settings = new Settings();
@@ -114,7 +113,7 @@ export default function ApiDocs() {
       <div className="api-metadata">
         {tags.map((tag) => (
           <div className="api-section" key={tag}>
-            <h2 className="api-tag">
+            <h2 className="tag">
               {tag}
               <FontAwesomeIcon icon={faTag} className="tag-icon" />
             </h2>

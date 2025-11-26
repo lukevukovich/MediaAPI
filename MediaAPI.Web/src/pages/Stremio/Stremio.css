@@ -1,4 +1,50 @@
+.stremio-section {
+    margin-bottom: 30px;
+}
+
 .stremio-tag {
     width: fit-content;
     min-width: auto;
+}
+
+.stremio-tag-icon {
+    margin-left: 6px;
+    margin-top: 2px;
+}
+
+.stremio-panel-title {
+    font-size: 20px;
+    margin-top: 2px;
+}
+
+.stremio-panel-content {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-weight: normal;
+}
+
+.stremio-panel-content p {
+    color: rgb(230, 230, 230);
+}
+
+.stremio-manifest-url-container {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: start;
+}
+
+.stremio-manifest-url-label {
+    font-weight: bold;
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+    color: white !important;
+}
+
+.stremio-manifest-url {
+    color: rgb(44, 192, 101) !important;
+    word-break: break-all;
 }

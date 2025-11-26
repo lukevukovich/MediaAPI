@@ -2,17 +2,6 @@
   margin-bottom: 30px;
 }
 
-.api-tag {
-  width: fit-content;
-  min-width: auto;
-  padding: 12px;
-}
-
-.tag-icon {
-  margin-left: 6px;
-  margin-top: 2px;
-}
-
 .api-url {
   display: flex;
   flex-direction: row;
@@ -33,9 +22,10 @@
 }
 
 .api-summary {
-  margin-top: 6px;
-  font-size: 13px;
+  margin-top: 7px;
+  font-size: 15px;
   color: rgb(182, 182, 182);
+  font-weight: normal;
 }
 
 .api-parameters {
@@ -49,13 +39,15 @@
 
 .param-name {
   text-transform: lowercase;
+  font-size: 15px;
 }
 
 .param-description {
-  font-size: 13px;
+  font-size: 14px;
   color: rgb(172, 172, 172);
   margin-bottom: 6px;
   margin-top: 1px;
+  font-weight: normal;
 }
 
 .param-type {
@@ -76,7 +68,7 @@
   margin-top: 6px;
 }
 
-input {
+.docs-page input {
   background-color: rgb(61, 61, 61);
   border: rgb(153, 153, 153) solid 1px;
   border-radius: 5px;

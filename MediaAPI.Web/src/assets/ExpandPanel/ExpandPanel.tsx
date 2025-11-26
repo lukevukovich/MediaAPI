@@ -65,7 +65,7 @@ export default function ExpandPanel({
     <div>
       <h3 className="panel">
         <div className="panel-left">
-          <div>{titleChildren}</div>
+          <div className="panel-title">{titleChildren}</div>
           <div className="panel-expand" ref={expandPanelRef}>
             {expandChildren}
           </div>

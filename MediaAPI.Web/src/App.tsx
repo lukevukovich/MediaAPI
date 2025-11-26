@@ -7,6 +7,7 @@ import {
 
 // Layouts and pages
 import RootLayout from "./utils/RootLayout";
+import IconRain from "./assets/IconRain.tsx/IconRain";
 import Home from "./pages/Home/Home";
 import ApiDocs from "./pages/ApiDocs/ApiDocs";
 import Stremio from "./pages/Stremio/Stremio";
@@ -25,7 +26,12 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <IconRain />
+    </>
+  );
 }
 
 export default App;

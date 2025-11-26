@@ -1,6 +1,11 @@
+.home-page h2 {
+  font-weight: normal;
+}
+
 .note {
   min-width: auto;
   width: fit-content;
+  font-weight: bold;
 }
 
 .icon {
