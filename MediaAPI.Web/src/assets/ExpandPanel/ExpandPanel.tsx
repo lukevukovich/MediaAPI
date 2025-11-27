@@ -64,13 +64,8 @@ export default function ExpandPanel({
   return (
     <div>
       <h3 className="panel">
-        <div className="panel-left">
+        <div className="panel-heading">
           <div className="panel-title">{titleChildren}</div>
-          <div className="panel-expand" ref={expandPanelRef}>
-            {expandChildren}
-          </div>
-        </div>
-        <div className="panel-right">
           <button className="button-expand" onClick={() => expand()}>
             <FontAwesomeIcon
               className="icon-expand"
@@ -78,6 +73,9 @@ export default function ExpandPanel({
               ref={expandIconRef}
             />
           </button>
+        </div>
+        <div className="panel-expand" ref={expandPanelRef}>
+          {expandChildren}
         </div>
       </h3>
     </div>

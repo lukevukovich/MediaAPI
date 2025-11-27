@@ -20,6 +20,7 @@ import {
   faTimes,
   type IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
+import { faCopy } from "@fortawesome/free-regular-svg-icons";
 
 export default function Stremio() {
   const settings = new Settings();
@@ -96,7 +97,7 @@ export default function Stremio() {
   }, [endpoints]);
 
   function visitImdbPage(imdbId: string) {
-    const imdbUrl = `https://www.imdb.com/title/${imdbId}/`;
+    const imdbUrl = `${settings.imdbUrl}title/${imdbId}/`;
     window.open(imdbUrl, "_blank");
   }
 
@@ -160,6 +161,15 @@ export default function Stremio() {
                 <p className="stremio-manifest-url">
                   {settings.mediaApiUrl}stremio/manifest.json
                 </p>
+                <FontAwesomeIcon
+                  icon={faCopy}
+                  className="stremio-manifest-copy"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      settings.mediaApiUrl + "stremio/manifest.json"
+                    );
+                  }}
+                />
               </div>
             </div>
           }
@@ -185,25 +195,42 @@ export default function Stremio() {
                       ? " loading"
                       : ""
                   }`}
+                  style={{
+                    color:
+                      (catalogIconState[catalog] === faCheck &&
+                        "rgb(44, 192, 101)") ||
+                      (catalogIconState[catalog] === faTimes &&
+                        "rgba(202, 55, 55, 1)") ||
+                      "white",
+                  }}
                   icon={catalogIconState[catalog] || faSpinner}
                 />
               </div>
             }
             expandChildren={
-              catalogMetadata[catalog] ? (
-                <div className="stremio-catalog-images">
-                  {catalogMetadata[catalog]?.metas?.map((meta) =>
-                    meta.poster ? (
-                      <img
-                        key={meta.id}
-                        src={meta.poster}
-                        alt={meta.name}
-                        onClick={() => visitImdbPage(meta.id)}
-                      />
-                    ) : null
-                  )}
-                </div>
-              ) : null
+              <div>
+                <p className="stremio-catalog-count">
+                  {catalogMetadata[catalog]?.metas
+                    ? `${catalogMetadata[catalog].metas.length} media result${
+                        catalogMetadata[catalog].metas.length === 1 ? "" : "s"
+                      }`
+                    : "Failed to fetch media results"}
+                </p>
+                {catalogMetadata[catalog] ? (
+                  <div className="stremio-catalog-images">
+                    {catalogMetadata[catalog]?.metas?.map((meta) =>
+                      meta.poster ? (
+                        <img
+                          key={meta.id}
+                          src={meta.poster}
+                          alt={meta.name}
+                          onClick={() => visitImdbPage(meta.id)}
+                        />
+                      ) : null
+                    )}
+                  </div>
+                ) : null}
+              </div>
             }
           />
         ))}

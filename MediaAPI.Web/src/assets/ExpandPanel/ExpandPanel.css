@@ -1,25 +1,22 @@
 .panel {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
 }
 
-.panel-left {
-  flex: 1 1 0;
-  min-width: 0;
-}
-
-.panel-right {
-  flex: 0 0 auto;
+.panel-heading {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .panel-expand {
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.27s ease;
+  width: 100%;
 }
 
 .button-expand {

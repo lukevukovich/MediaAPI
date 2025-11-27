@@ -14,7 +14,6 @@
 
 .stremio-panel-title {
   font-size: 20px;
-  margin-top: 2px;
 }
 
 .stremio-panel-content {
@@ -34,6 +33,8 @@
   flex-direction: row;
   gap: 6px;
   align-items: start;
+  margin-bottom: 2px;
+  margin-top: 2px;
 }
 
 .stremio-manifest-url-label {
@@ -49,12 +50,35 @@
   word-break: break-all;
 }
 
+.stremio-manifest-copy {
+  font-size: 16px;
+  margin-top: 2px;
+  margin-left: 1px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.stremio-manifest-copy:hover {
+  transform: scale(1.2);
+}
+
+.stremio-manifest-copy:active {
+  transform: scale(0.8);
+}
+
+.stremio-catalog-count {
+  font-weight: normal;
+  margin-top: 14px;
+  margin-left: 7px;
+  font-size: 16px;
+}
+
 .stremio-catalog-images {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   column-gap: 10px;
   row-gap: 12px;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-left: 6px;
   margin-right: 6px;
 }
