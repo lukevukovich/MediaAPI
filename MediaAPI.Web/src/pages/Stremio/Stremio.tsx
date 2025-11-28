@@ -214,7 +214,9 @@ export default function Stremio() {
                     ? `${catalogMetadata[catalog].metas.length} media result${
                         catalogMetadata[catalog].metas.length === 1 ? "" : "s"
                       }`
-                    : "Failed to fetch media results"}
+                    : catalogIconState[catalog] === faSpinner
+                    ? "Loading media results..."
+                    : "Failed to fetch media results."}
                 </p>
                 {catalogMetadata[catalog] ? (
                   <div className="stremio-catalog-images">
